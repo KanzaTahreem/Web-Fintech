@@ -1,10 +1,17 @@
-import './App.css';
+import { Routes, Route } from 'react-router-dom';
+import Dashboard from './components/Dashboard';
+import NoResult from './components/NoResult';
+import RegisterReason from './components/RegisterReason';
+import InvestChange from './components/InvestChange';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      Learn React
-    </div>
+    <Routes>
+      <Route exact path="/" element={<Dashboard />} />
+      <Route exact path="/no-result" element={<NoResult />} />
+      <Route exact path="/modals" element={<InvestChange />} />
+      <Route exact path="/reason" element={<RegisterReason />} />
+    </Routes>
   );
 }
 
