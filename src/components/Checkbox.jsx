@@ -1,13 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "../styles/modal.module.css";
 
-const Checkbox = ({ label, checked }) => {
-
-  const defaultChecked = checked !== undefined ? checked : false;
-  const [isChecked, setIsChecked] = useState(defaultChecked);
-
+const Checkbox = ({ label, checked, onChange, disabled }) => {
   const handleCheck = () => {
-    setIsChecked((prev) => !prev);
+    if (!disabled && onChange) {
+      onChange(label);
+    }
   };
 
   return (
@@ -15,9 +13,10 @@ const Checkbox = ({ label, checked }) => {
       <label className={styles.label}>
         <input
           type="checkbox"
-          checked={isChecked}
-          className={`${isChecked ? styles.checked : ""} ${styles.checkbox}`}
+          checked={checked}
+          className={`${checked ? styles.checked : ""} ${styles.checkbox}`}
           onChange={handleCheck}
+          disabled={disabled}
         />
         <span>{label}</span>
       </label>

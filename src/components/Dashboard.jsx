@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import ClientsTable from './ClientsTable';
 import Dropdown from './Dropdown';
+import { Link } from 'react-router-dom';
 import styles from '../styles/dashboard.module.css';
 
-const Dashboard = () => {
+const Dashboard = ({displayPopup, closePopup}) => {
   const tabItems = [
     '기본정보 관리',
     '투자유형 관리',
@@ -23,8 +24,28 @@ const Dashboard = () => {
     { buttonText: '50개씩 보기', menuItems: ['25개씩 보기', '100개씩 보기'], selectedItem: null },
   ];
 
+  const [selectedApplications, setSelectedApplications] = useState([]);
   const [approvalStatusSelectedItem, setApprovalStatusSelectedItem] = useState(null);
   const [menuItemsSelectedItems, setMenuItemsSelectedItems] = useState(menus.map(() => null));
+
+  const handleCheckboxChange = (label) => {
+    if (selectedApplications.includes(label)) {
+      setSelectedApplications(selectedApplications.filter(app => app !== label));
+    } else {
+      setSelectedApplications([...selectedApplications, label]);
+    }
+  };
+
+  const handleSave = (e) => {
+    e.preventDefault();
+    console.log(selectedApplications);
+    console.log(selectedApplications.length);
+    if (selectedApplications.length === 0) {
+      displayPopup('No applications selected', closePopup, null);
+      return;
+    }
+    displayPopup("saved", closePopup, null)
+  }
 
   return (
     <section className={styles.member_management}>
@@ -61,11 +82,13 @@ const Dashboard = () => {
           </div>
         </div>
         <div className={styles.lower_middle_row}>
-          <button type="button" className={styles.btn}>
-            등록
-          </button>
+          <Link to="/registration">
+            <button type="button" className={styles.btn}>
+              등록
+            </button>
+          </Link>
           <div>
-            <p>선택한 0건</p>
+            <p>선택한 {selectedApplications.length}건</p>
             <Dropdown
               className={`${styles.box} ${approvalStatus.isOpen ? styles['is-open'] : ''}`}
               buttonText="승인상태 변경"
@@ -73,13 +96,16 @@ const Dashboard = () => {
               selectedItem={approvalStatusSelectedItem}
               setSelectedItem={setApprovalStatusSelectedItem}
             />
-            <button type="button" className={styles.btn}>
+            <button type="button" className={styles.btn} onClick={handleSave}>
               저장
             </button>
           </div>
         </div>
       </div>
-      <ClientsTable />
+      <ClientsTable
+        selectedApplications={selectedApplications}
+        onChange={handleCheckboxChange}
+      />
     </section>
   );
 };

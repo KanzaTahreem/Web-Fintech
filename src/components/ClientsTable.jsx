@@ -9,17 +9,22 @@ import rightArrow from '../assets/images/right_arrow.svg'
 import styles from '../styles/dashboard.module.css';
 
 
-const ClientsTable = () => {
+const ClientsTable = ({ selectedApplications, onChange }) => {
   return (
     <>
       <div className={styles.clients_table}>
         <table>
           <TableHead />
           <tbody>
-            {ClientsData.map((item, index) => (
-                <TableRow key={index} item={item} />
-              )
-            )}
+          {ClientsData.map((item, index) => (
+              <TableRow
+                key={index}
+                item={item}
+                selectedApplications={selectedApplications}
+                onChange={onChange}
+              />
+            ))
+          }
           </tbody>
         </table>
       </div>

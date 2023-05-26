@@ -1,8 +1,14 @@
 import React from 'react';
+import Checkbox from './Checkbox';
 import styles from '../styles/dashboard.module.css';
 
-const TableRow = ({ item }) => {
+const TableRow = ({ item, selectedApplications, onChange }) => {
   const { serial, previousType, applicationType, docs, applicationDate, approvalStatus, reason, approvalDate, admin } = item;
+  const isChecked = selectedApplications.includes(serial);
+
+  const handleCheckboxChange = () => {
+    onChange(serial);
+  };
 
   const getClassName = () => {
     if (approvalStatus === '승인대기') {
@@ -17,7 +23,13 @@ const TableRow = ({ item }) => {
 
   return (
     <tr className={styles.customer}>
-      <td className={styles.checkbox}><span /></td>
+      <td className={styles.checkbox}>
+        <Checkbox
+          label=""
+          checked={isChecked}
+          onChange={handleCheckboxChange}
+        />
+      </td>
       <td className={styles.serial}>{serial}</td>
       <td>{previousType}</td>
       <td>{applicationType}</td>
