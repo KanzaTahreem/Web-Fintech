@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import Dropdown from './Dropdown';
-import Popup from './Popup';
 import { HiXMark } from 'react-icons/hi2';
 import styles from '../styles/modal.module.css';
 
-const InvestChange = () => {
+const InvestChange = ({displayPopup, closePopup}) => {
   const investmentType = ['일반개인', '소득적격', '개인전문', '법인', '여신금융', 'P2P온투'];
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
   const [prevSelectedItem, setPrevSelectedItem] = useState(null);
   const [fileLimit, setFileLimit] = useState(false);
-  const [popupScreen, setPopupScreen] = useState(null);
 
   const MAX_SIZE = 100 * 1024 * 1024;
   const MAX_COUNT = 10;
@@ -49,14 +47,6 @@ const InvestChange = () => {
     if (!limitExceeded) setUploadedFiles(uploaded);
   };
 
-  const displayPopup = (message, closeFunc, cancelFunc) => {
-    setPopupScreen(<Popup message={message} onClose={closeFunc} onCancel={cancelFunc} onCancelText={"취소"} />);
-  };
-
-  const closePopup = () => {
-    setPopupScreen(null);
-  };
-
   const removeFile = (fileIndex) => {
     setUploadedFiles(uploadedFiles.filter((_f, index) => fileIndex !== index));
   }
@@ -79,7 +69,7 @@ const InvestChange = () => {
     if(changeItem) {
       setPrevSelectedItem(selectedItem);
     }
-    setPopupScreen(null);
+    closePopup();
   }
 
   useEffect(() => {
@@ -158,7 +148,6 @@ const InvestChange = () => {
         <button className={styles.save_btn} onClick={handleSave}>저장</button>
         <button className={styles.cancel_btn}>취소</button>
       </div>
-      {popupScreen}
     </section>
   );
 }
