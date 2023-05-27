@@ -236,18 +236,21 @@ input[type="checkbox"] {
   padding: 0;
 }
 
-input.checked {
+input.checked,
+.chkChecked {
   background-color: #2A3958;
   position: relative;
 }
 
-input[type="checkbox"]:before {
+input[type="checkbox"]:before,
+.chkChecked:before {
   content: '';
   display: block;
   transition: transform 200ms;
 }
 
-input[type="checkbox"]:checked:before {
+input[type="checkbox"]:checked:before,
+.chkChecked:checked:before {
   width: 4px;
   height: 9px;
   margin: 2px 6px;
@@ -274,6 +277,15 @@ input[type="checkbox"]:checked:before {
   max-width: 100%
 }
 
+.checkbox_wrapper {
+  flex-direction: column;
+  align-items: flex-start;
+  display: flex;
+  gap: 0.5rem;
+  padding: 1rem;
+  width: 100%;
+}
+
 .add_reason {
   background: #DDE0E6;
   border: 1px solid #B1B4BB;
@@ -286,6 +298,10 @@ input[type="checkbox"]:checked:before {
   resize: none;
 }
 
+textarea {
+  color: #5A616A;
+}
+
 textarea::placeholder {
   color: #B1B4BB;
 }
@@ -295,5 +311,33 @@ textarea::placeholder {
   color: #a0a0a0;
 }
 
+.textarea_enabled {
+  background: white;
+}
 
-/* popup.module.css */
+
+.check_reason {
+  height: 42.938rem;
+}
+
+.row_div {
+  justify-content: space-between;
+}
+
+.row_div > div {
+  display: flex;
+  border: 1px solid #D7D8DA;
+}
+
+.row_div input {
+  border-bottom: none;
+  min-width: 220px;
+}
+
+.check_reason form:first-child {
+  margin-bottom: 20px;
+}
+
+.check_reason form:nth-child(2) {
+  border: none;
+}

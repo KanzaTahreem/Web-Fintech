@@ -1,3 +1,31 @@
+.children_div {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+}
+
+.background_div {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 49;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(px);
+}
+
+
+
+
+
+
 .member_management {
   display: flex;
   flex-direction: column;
@@ -38,9 +66,6 @@
 }
 
 .upper_middle_row {
-  /* display: flex;
-  justify-content: space-between;
-  align-items: center; */
   border-bottom: 1px solid #D7D8DA;
   padding-bottom: 12.5px;
 }
@@ -92,18 +117,6 @@
   color: #5A616A;
 }
 
-/* .dropdown::after {
-  display: flex;
-  transform: rotate(45deg);
-  width: 8px;
-  height: 8px;
-  margin-left: 10px;
-  border-right: 2px solid #5A616A;
-  border-bottom: 2px solid #5A616A;
-  vertical-align: 4px;
-  content: '';
-} */
-
 .select {
   display: none;
   position: absolute;
@@ -145,7 +158,6 @@
 .select.is-open {
   display: flex;
   flex-direction: column;
-  /* gap: 0.4rem; */
   z-index: 1;
 }
 
@@ -171,6 +183,10 @@
 .btn:hover {
   cursor: pointer;
   box-shadow: 4px 7px 6px -4px rgb(37 38 39 / 30%);
+}
+
+.btn:disabled {
+  opacity: 0.8;
 }
 
 .lower_middle_row {
@@ -326,25 +342,10 @@ td {
 }
 
 
-/* .checkbox span {
-  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1), 0px 0px 0px 1px rgba(70, 79, 96, 0.16), 0px 2px 5px rgba(89, 96, 120, 0.1);
-  border-radius: 4px;
-  outline: none;
-  appearance: none;
-  width: 0.9rem;
-  height: 0.9rem;
-} */
-
 .clients_table .checkbox label {
   min-width: auto;
   background: transparent;
 }
-
-/* .customer:nth-child(3n+2) input,
-.customer:nth-child(3n+3) input{
-  background-color: #DDE0E5;
-} */
-
 
 /* ---------- Pagination ---------- */
 
@@ -413,10 +414,3 @@ td {
   display: block;
 }
 
-
-
-
-/*new styles*/
-.chkDisabled {
-  background-color: red;
-}
