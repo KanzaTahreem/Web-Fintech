@@ -5,6 +5,7 @@ import styles from '../styles/app.module.css';
 import { Modal } from './Modal';
 import InvestChange from './InvestChange';
 import Container from './Container';
+import ClientsData from './ClientsData';
 
 const ApplicationList = ({displayPopup, closePopup}) => {
   const tabItems = [
@@ -31,6 +32,7 @@ const ApplicationList = ({displayPopup, closePopup}) => {
   const [approvalStatusSelectedItem, setApprovalStatusSelectedItem] = useState(null);
   const [prevApprovalStatusSelectedItem, setPrevApprovalStatusSelectedItem] = useState(null);
   const [menuItemsSelectedItems, setMenuItemsSelectedItems] = useState(menus.map(() => null));
+  const [clientsData, setClientsData] = useState(ClientsData);
 
   const handleCheckboxChange = (label) => {
     if (selectedApplications.includes(label)) {
@@ -42,8 +44,6 @@ const ApplicationList = ({displayPopup, closePopup}) => {
 
   const handleSave = (e) => {
     e.preventDefault();
-    console.log(selectedApplications);
-    console.log(selectedApplications.length);
     if (selectedApplications.length === 0) {
       displayPopup('No applications selected', closePopup, null);
       return;
@@ -61,12 +61,29 @@ const ApplicationList = ({displayPopup, closePopup}) => {
 
   const updateSelectedItemAndClose = (changeItem) => {
     if(changeItem) {
+      selectedApplications.forEach((application) => {
+        console.log(application)
+        updateApprovalStatus(application, approvalStatusSelectedItem)
+      });
+      setSelectedApplications([]);
       setPrevApprovalStatusSelectedItem(approvalStatusSelectedItem);
     } else {
       setApprovalStatusSelectedItem(prevApprovalStatusSelectedItem)
     }
     closePopup();
   }
+
+  const updateApprovalStatus = (i, status) => {
+    setClientsData(clientsData.map((client) => {
+      if (client.serial === i) {
+        return {
+          ...client,
+          approvalStatus: status
+        };
+      }
+      return client;
+    }))
+  };
 
   useEffect(() => {
     if (approvalStatusSelectedItem) {
@@ -126,11 +143,11 @@ const ApplicationList = ({displayPopup, closePopup}) => {
           <div>
             <p>선택한 {selectedApplications.length}건</p>
             <Dropdown
-              className={`${styles.box} ${approvalStatus.isOpen ? styles['is-open'] : ''}`}
               buttonText="승인상태 변경"
               menuItems={approvalStatus}
               selectedItem={prevApprovalStatusSelectedItem}
               setSelectedItem={setApprovalStatusSelectedItem}
+              enabled={selectedApplications.length}
             />
             <button
               type="button"
@@ -146,6 +163,7 @@ const ApplicationList = ({displayPopup, closePopup}) => {
       <ClientsTable
         selectedApplications={selectedApplications}
         onChange={handleCheckboxChange}
+        clientsData={clientsData}
       />
     </section>
   );

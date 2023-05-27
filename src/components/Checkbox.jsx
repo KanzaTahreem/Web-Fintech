@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '../styles/modal.module.css';
 
-const Checkbox = ({ label, checked, onChange }) => {
+const Checkbox = ({ label, checked, onChange, getClassName }) => {
 
   const handleCheck = () => {
     onChange(label);
@@ -13,7 +13,7 @@ const Checkbox = ({ label, checked, onChange }) => {
         <input
           type="checkbox"
           checked={checked}
-          className={`${checked ? styles.checked : ''} ${styles.checkbox}`}
+          className={getClassName ? getClassName() : `${checked ? styles.checked : ''} ${styles.checkbox}`}
           onChange={handleCheck}
         />
         <span>{label}</span>
