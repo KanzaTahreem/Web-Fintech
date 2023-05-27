@@ -3,7 +3,7 @@ import Dropdown from './Dropdown';
 import { HiXMark } from 'react-icons/hi2';
 import styles from '../styles/modal.module.css';
 
-const InvestChange = ({displayPopup, closePopup}) => {
+const InvestChange = ({displayPopup, closePopup, onClose}) => {
   const investmentType = ['일반개인', '소득적격', '개인전문', '법인', '여신금융', 'P2P온투'];
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -68,6 +68,8 @@ const InvestChange = ({displayPopup, closePopup}) => {
   const updateSelectedItemAndClose = (changeItem) => {
     if(changeItem) {
       setPrevSelectedItem(selectedItem);
+    } else {
+      setSelectedItem(prevSelectedItem);
     }
     closePopup();
   }
@@ -92,7 +94,7 @@ const InvestChange = ({displayPopup, closePopup}) => {
     <section className={styles.investment_change}>
       <div>
         <h1 className={styles.title}>투자유형 변경</h1>
-        <HiXMark className={styles.xmark} />
+        <HiXMark className={styles.xmark} onClick={onClose} />
       </div>
       <div className={styles.model_content}>
         <form>

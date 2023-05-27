@@ -8,7 +8,7 @@ const ClientsData = [
     approvalStatus: '승인대기',
     reason: '',
     approvalDate: '',
-    admin: ''
+    admin: '',
   },
   {
     serial: 2,
