@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import Dashboard from './components/Dashboard';
+import ApplicationList from './components/ApplicationList';
 import NoResult from './components/NoResult';
 import RegisterReason from './components/RegisterReason';
 import InvestChange from './components/InvestChange';
@@ -9,7 +9,7 @@ import Container from './components/Container';
 const App = () => {
   return (
     <Routes>
-      <Route exact path="/" element={<Container><Dashboard /></Container>} />
+      <Route exact path="/" element={<Container><ApplicationList /></Container>} />
       <Route exact path="/no-result" element={<NoResult />} />
       <Route exact path="/modals" element={<Container><InvestChange /></Container>} />
       <Route exact path="/registration" element={<Container><RegisterReason /></Container>} />

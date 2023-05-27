@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ClientsTable from './ClientsTable';
 import Dropdown from './Dropdown';
-import { Link } from 'react-router-dom';
-import styles from '../styles/dashboard.module.css';
+import styles from '../styles/app.module.css';
+import { Modal } from './Modal';
+import InvestChange from './InvestChange';
+import Container from './Container';
 
-const Dashboard = ({displayPopup, closePopup}) => {
+const ApplicationList = ({displayPopup, closePopup}) => {
   const tabItems = [
     '기본정보 관리',
     '투자유형 관리',
@@ -24,8 +26,10 @@ const Dashboard = ({displayPopup, closePopup}) => {
     { buttonText: '50개씩 보기', menuItems: ['25개씩 보기', '100개씩 보기'], selectedItem: null },
   ];
 
+  const [modal, setModal] = useState(<></>);
   const [selectedApplications, setSelectedApplications] = useState([]);
   const [approvalStatusSelectedItem, setApprovalStatusSelectedItem] = useState(null);
+  const [prevApprovalStatusSelectedItem, setPrevApprovalStatusSelectedItem] = useState(null);
   const [menuItemsSelectedItems, setMenuItemsSelectedItems] = useState(menus.map(() => null));
 
   const handleCheckboxChange = (label) => {
@@ -44,11 +48,45 @@ const Dashboard = ({displayPopup, closePopup}) => {
       displayPopup('No applications selected', closePopup, null);
       return;
     }
-    displayPopup("saved", closePopup, null)
+    displayPopup("saved", closePopup, null);
   }
+
+  const onClose = () => setModal(<></>);
+
+  const openModal = (name) => {
+    if (name === "InvestChange") {
+      setModal(<Modal><Container><InvestChange onClose={onClose} /></Container></Modal>)
+    }
+  }
+
+  const updateSelectedItemAndClose = (changeItem) => {
+    if(changeItem) {
+      setPrevApprovalStatusSelectedItem(approvalStatusSelectedItem);
+    } else {
+      setApprovalStatusSelectedItem(prevApprovalStatusSelectedItem)
+    }
+    closePopup();
+  }
+
+  useEffect(() => {
+    if (approvalStatusSelectedItem) {
+      if (prevApprovalStatusSelectedItem) {
+        if (approvalStatusSelectedItem !== prevApprovalStatusSelectedItem) {
+          displayPopup(
+            'Do you want to change the approval status of selected 2 cases?',
+            () => updateSelectedItemAndClose(true),
+            () => updateSelectedItemAndClose(false)
+          )
+        }
+      } else {
+        setPrevApprovalStatusSelectedItem(approvalStatusSelectedItem);
+      }
+    }
+  }, [approvalStatusSelectedItem])
 
   return (
     <section className={styles.member_management}>
+      {modal}
       <div className={styles.upper_row}>
         <h1 className={styles.headline}>회원상세</h1>
         <div className={styles.tabs}>
@@ -82,21 +120,24 @@ const Dashboard = ({displayPopup, closePopup}) => {
           </div>
         </div>
         <div className={styles.lower_middle_row}>
-          <Link to="/registration">
-            <button type="button" className={styles.btn}>
-              등록
-            </button>
-          </Link>
+          <button type="button" className={styles.btn} onClick={() => openModal('InvestChange')}>
+            등록
+          </button>
           <div>
             <p>선택한 {selectedApplications.length}건</p>
             <Dropdown
               className={`${styles.box} ${approvalStatus.isOpen ? styles['is-open'] : ''}`}
               buttonText="승인상태 변경"
               menuItems={approvalStatus}
-              selectedItem={approvalStatusSelectedItem}
+              selectedItem={prevApprovalStatusSelectedItem}
               setSelectedItem={setApprovalStatusSelectedItem}
             />
-            <button type="button" className={styles.btn} onClick={handleSave}>
+            <button
+              type="button"
+              className={styles.btn}
+              onClick={handleSave}
+              disabled={selectedApplications.length > 0}
+            >
               저장
             </button>
           </div>
@@ -110,4 +151,4 @@ const Dashboard = ({displayPopup, closePopup}) => {
   );
 };
 
-export default Dashboard;
+export default ApplicationList;
