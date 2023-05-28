@@ -56,9 +56,9 @@ const ApplicationList = ({displayPopup, closePopup}) => {
     setModal(<></>);
   }
 
-  const updateAllSelected = () => {
+  const updateAllSelected = (reasonOfDenial) => {
     getClientsDataChecked().forEach((application) => {
-      dispatchApprovalStatusUpdate(application.serial, approvalStatusSelectedItem);
+      dispatchApprovalStatusUpdate(application.serial, approvalStatusSelectedItem, reasonOfDenial);
     });
   }
 
@@ -85,8 +85,9 @@ const ApplicationList = ({displayPopup, closePopup}) => {
     if(changeItem) {
       if (approvalStatusSelectedItem === approvalStatus[1]) {
         openModal("RegisterReason")
+      } else {
+        updateAllSelected();
       }
-      updateAllSelected();
       setPrevApprovalStatusSelectedItem(approvalStatusSelectedItem);
     } else {
       setApprovalStatusSelectedItem(prevApprovalStatusSelectedItem)
@@ -94,8 +95,8 @@ const ApplicationList = ({displayPopup, closePopup}) => {
     closePopup();
   }
 
-  const dispatchApprovalStatusUpdate = (i, status) => {
-    dispatch(updateApprovalStatus({serial: i, approvalStatus: status}));
+  const dispatchApprovalStatusUpdate = (i, status, reasonOfDenial) => {
+    dispatch(updateApprovalStatus({serial: i, approvalStatus: status, reasonOfDenial}));
   };
 
   useEffect(() => {
@@ -117,7 +118,7 @@ const ApplicationList = ({displayPopup, closePopup}) => {
   const getClientsDataChecked = () => clientsData ? clientsData.filter((client) => client.checked) : [];
 
   return (
-    <section className={styles.member_management}>
+    <section className={styles.application_list}>
       {modal}
       <div className={styles.upper_row}>
         <h1 className={styles.headline}>회원상세</h1>

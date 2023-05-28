@@ -1,7 +1,7 @@
 import React from 'react';
 import { HiXMark } from 'react-icons/hi2';
 import Checkbox from './Checkbox';
-import styles from '../styles/modal.module.css';
+import styles from '../styles/app.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { resetRegisterModal, toggleCheckbox, updateTextarea } from '../redux/registerReducer';
 import InputField from './InputField';
@@ -22,7 +22,17 @@ const RegisterReason = ({ displayPopup, closePopup, onClose, onApproval }) => {
 
   const closePopupEntirely = () => {
     dispatch(resetRegisterModal())
-    onApproval();
+    let reason = "";
+    for (const key in checkboxes) {
+      if (checkboxes.hasOwnProperty(key) && checkboxes[key]) {
+        reason = key;
+      }
+    }
+    if (reason === '직접 입력') {
+      reason = textarea
+    }
+    onApproval(reason);
+
     closePopup();
     onClose();
   }
@@ -45,7 +55,7 @@ const RegisterReason = ({ displayPopup, closePopup, onClose, onApproval }) => {
   }
 
   return (
-    <section className={styles.register_reason}>
+    <section className={styles.modal}>
       <div>
         <h1 className={styles.title}>투자유형 변경</h1>
         <HiXMark className={styles.xmark}  onClick={cancelPopup} />

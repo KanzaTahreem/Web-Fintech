@@ -53,7 +53,8 @@ const clientsDataReducer = (state = initialState, action) => {
           return {
             ...item,
             approvalStatus: action.payload.approvalStatus,
-            checked: false
+            checked: false,
+            reason: action.payload.reasonOfDenial || item.reason || ""
           }
         }
         return item;
