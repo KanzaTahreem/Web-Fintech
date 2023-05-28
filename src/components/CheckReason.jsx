@@ -1,11 +1,11 @@
 import React from 'react';
 import { HiXMark } from 'react-icons/hi2';
 import Checkbox from './Checkbox';
-import styles from '../styles/modal.module.css';
+import styles from '../styles/app.module.css';
 
 const CheckReason = () => {
   return (
-    <section className={`${styles.register_reason} ${styles.check_reason}`}>
+    <section className={`${styles.modal} ${styles.check_reason}`}>
     <div>
       <h1 className={styles.title}>투자유형 변경</h1>
       <HiXMark className={styles.xmark} />

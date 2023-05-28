@@ -1,7 +1,7 @@
 import React from 'react';
 import Checkbox from './Checkbox';
-import styles from '../styles/dashboard.module.css';
-import modalStyles from '../styles/modal.module.css';
+import styles from '../styles/app.module.css';
+import modalStyles from '../styles/app.module.css';
 import { useDispatch } from 'react-redux';
 import { selectUnSelectApplication } from '../redux/clientsDataReducer';
 

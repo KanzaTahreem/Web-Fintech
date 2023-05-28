@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Dropdown from './Dropdown';
-import styles from '../styles/dashboard.module.css';
+import styles from '../styles/app.module.css';
 import TableHead from './TableHead';
 
 const NoResult = () => {
@@ -17,7 +17,7 @@ const NoResult = () => {
 
 
   return (
-    <section className={styles.member_management}>
+    <section className={styles.application_list}>
       <div className={styles.middle_row}>
         <div className={styles.upper_middle_row}>
           <h2 className={styles.headline}>

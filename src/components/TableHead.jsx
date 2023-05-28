@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../styles/dashboard.module.css';
+import styles from '../styles/app.module.css';
 
 const TableHead = () => {
   return (

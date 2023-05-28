@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
-import styles from '../styles/dashboard.module.css';
-import modalStyles from '../styles/modal.module.css';
+import styles from '../styles/app.module.css';
 
 const Dropdown = ({ buttonText, menuItems, selectedItem, setSelectedItem, enabled }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -39,11 +38,11 @@ const Dropdown = ({ buttonText, menuItems, selectedItem, setSelectedItem, enable
   }, []);
 
   return (
-    <div ref={dropdownRef} className={`${styles.box} ${modalStyles.investment_dropdown} ${isOpen ? styles['is-open'] : ''}`}>
-      <button type="button" className={`${styles.dropdown} ${modalStyles.dropdown}`} onClick={toggleDropdown}>
+    <div ref={dropdownRef} className={`${styles.box} ${styles.investment_dropdown} ${isOpen ? styles['is-open'] : ''}`}>
+      <button type="button" className={`${styles.dropdown} ${styles.dropdown}`} onClick={toggleDropdown}>
         {selectedItem ? selectedItem : buttonText} {isOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
       </button>
-      <ul className={`${styles.select} ${isOpen ? `${styles['is-open']} ${modalStyles['modal-open']}` : ''}`}>
+      <ul className={`${styles.select} ${isOpen ? `${styles['is-open']} ${styles['modal-open']}` : ''}`}>
         {menuItems.map((item, index) => (
           <li
             key={index}

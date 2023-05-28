@@ -6,7 +6,7 @@ import leftDoubleArrow from '../assets/images/double_left_arrow.svg'
 import rightDoubleArrow from '../assets/images/double_right_arrow.svg'
 import leftArrow from '../assets/images/left_arrow.svg'
 import rightArrow from '../assets/images/right_arrow.svg'
-import styles from '../styles/dashboard.module.css';
+import styles from '../styles/app.module.css';
 import Container from './Container';
 
 const ClientsTable = () => {

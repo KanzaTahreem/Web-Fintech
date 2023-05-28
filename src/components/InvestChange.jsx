@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Dropdown from './Dropdown';
 import { HiXMark } from 'react-icons/hi2';
-import styles from '../styles/modal.module.css';
+import styles from '../styles/app.module.css';
 
 const InvestChange = ({displayPopup, closePopup, onClose}) => {
   const investmentType = ['일반개인', '소득적격', '개인전문', '법인', '여신금융', 'P2P온투'];
@@ -91,7 +91,7 @@ const InvestChange = ({displayPopup, closePopup, onClose}) => {
   }, [selectedItem])
 
   return (
-    <section className={styles.investment_change}>
+    <section className={`${styles.investment_change} ${styles.modal}`}>
       <div>
         <h1 className={styles.title}>투자유형 변경</h1>
         <HiXMark className={styles.xmark} onClick={onClose} />
