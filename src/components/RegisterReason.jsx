@@ -1,45 +1,29 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { HiXMark } from 'react-icons/hi2';
 import Checkbox from './Checkbox';
 import styles from '../styles/modal.module.css';
+import { useSelector, useDispatch } from 'react-redux';
+import { resetRegisterModal, toggleCheckbox, updateTextarea } from '../redux/registerReducer';
+import InputField from './InputField';
+import { resolvePath } from 'react-router-dom';
 
-const RegisterReason = ({ displayPopup, closePopup }) => {
-  const [reasons, setReasons] = useState({
-    checkboxes: {
-      '서류 식별 불가': false,
-      '필수 서류 누락': false,
-      '서류의 내용이 등록된 회원정보와 다름': false,
-      '서류에 누락된 내용이 있음 (필수정보, 회사직인, 본인날인, 본인서명 등)': false,
-      '서류의 유효기간이 초과됨': false,
-      '직접 입력': false,
-    },
-    textarea: '',
-  });
+const RegisterReason = ({ displayPopup, closePopup, onClose }) => {
+  const dispatch = useDispatch();
+  const checkboxes = useSelector((state) => state.register.checkboxes);
+  const textarea = useSelector((state) => state.register.textarea)
 
   const handleCheckboxChange = (label) => {
-    setReasons((prevReasons) => ({
-      checkboxes: {
-        ...Object.keys(prevReasons.checkboxes).reduce((acc, key) => {
-          acc[key] = key === label ? !prevReasons.checkboxes[key] : false;
-          return acc;
-        }, {}),
-      },
-      textarea: prevReasons.textarea,
-    }));
+    dispatch(toggleCheckbox(label));
   };
 
   const handleTextareaChange = (event) => {
     const value = event.target.value;
-    setReasons((prevReasons) => ({
-      ...prevReasons,
-      textarea: value,
-    }));
+    dispatch(updateTextarea(value));
   };
 
   const handleSave = (event) => {
     event.preventDefault();
 
-    const { checkboxes, textarea } = reasons;
     const isAnyCheckboxChecked = Object.values(checkboxes).includes(true);
 
     if ((!isAnyCheckboxChecked && textarea.trim() === '') || (checkboxes['직접 입력'] && textarea.trim() === '')) {
@@ -49,43 +33,41 @@ const RegisterReason = ({ displayPopup, closePopup }) => {
     }
   };
 
+  const cancelPopup = () => {
+    dispatch(resetRegisterModal())
+    onClose();
+  }
+
   return (
     <section className={styles.register_reason}>
       <div>
         <h1 className={styles.title}>투자유형 변경</h1>
-        <HiXMark className={styles.xmark} />
+        <HiXMark className={styles.xmark}  onClick={cancelPopup} />
       </div>
       <div className={styles.model_content}>
         <form>
-          <div>
-            <label htmlFor="text">회원번호</label>
-            <input type="text" name="text" placeholder="abc111, abc222" />
-          </div>
-          <div>
-            <label htmlFor="text">회원명/법인명</label>
-            <input type="text" name="text" placeholder="김길동, ㈜가나다라투자" />
-          </div>
+          <InputField text={"회원번호"} placeholder={"abc111, abc222"} />
+          <InputField text={"회원명/법인명"} placeholder={"김길동, ㈜가나다라투자"} />
           <div>
             <label htmlFor="text">승인거부 사유</label>
             <div className={styles.checkbox_wrapper}>
-              {Object.entries(reasons.checkboxes).map(([label, checked]) => (
+              {Object.entries(checkboxes).map(([label, checked]) => (
                 <Checkbox
                   key={label}
                   label={label}
                   checked={checked}
                   onChange={() => handleCheckboxChange(label)}
                   disabled={
-                    (Object.values(reasons.checkboxes).some((value) => value) && !checked) ||
+                    (Object.values(checkboxes).some((value) => value) && !checked) ||
                     (label === '직접 입력' && checked)
                   }
                 />
               ))}
-
               <textarea
                 onChange={handleTextareaChange}
-                className={`${styles.add_reason} ${reasons.checkboxes['직접 입력'] ? styles.textarea_enabled : ''}`}
+                className={`${styles.add_reason} ${checkboxes['직접 입력'] ? styles.textarea_enabled : ''}`}
                 placeholder="사유 입력"
-                disabled={!reasons.checkboxes['직접 입력']}
+                disabled={!checkboxes['직접 입력']}
               ></textarea>
             </div>
           </div>
@@ -95,7 +77,7 @@ const RegisterReason = ({ displayPopup, closePopup }) => {
         <button className={styles.save_btn} onClick={handleSave}>
           저장
         </button>
-        <button className={styles.cancel_btn}>취소</button>
+        <button className={styles.cancel_btn} onClick={cancelPopup}>취소</button>
       </div>
     </section>
   );

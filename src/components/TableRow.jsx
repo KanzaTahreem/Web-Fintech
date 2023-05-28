@@ -39,7 +39,7 @@ const TableRow = ({ item, displayPopup, closePopup, key }) => {
 
   const onCheckBoxChange = (e) => {
     if (checkboxDisabled()) {
-      const message = approvalStatus === '승인완료' ? '이미 승인 완료된 회원입니다.' : '이미 승인 거부된 회원입니다';
+      const message = approvalStatus === '승인완료' ? 'You are already an approved member.' : 'You have already been denied approval.';
       displayPopup(message, closePopup, null)
     } else {
       handleCheckboxChange();

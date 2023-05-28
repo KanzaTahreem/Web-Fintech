@@ -8,6 +8,7 @@ import InvestChange from './InvestChange';
 import Container from './Container';
 import { useSelector } from 'react-redux';
 import { updateApprovalStatus } from '../redux/clientsDataReducer';
+import RegisterReason from './RegisterReason';
 
 const ApplicationList = ({displayPopup, closePopup}) => {
   const tabItems = [
@@ -45,19 +46,32 @@ const ApplicationList = ({displayPopup, closePopup}) => {
     displayPopup('No applications selected', closePopup, null);
   }
 
-  const onClose = () => setModal(<></>);
+  const closeRegisterReason = () => {
+    setApprovalStatusSelectedItem("승인상태 변경");
+    setPrevApprovalStatusSelectedItem(null);
+    setModal(<></>);
+  };
+
+  const closeInvestChange = () => {
+    setModal(<></>);
+  }
 
   const openModal = (name) => {
     if (name === "InvestChange") {
-      setModal(<Modal><Container><InvestChange onClose={onClose} /></Container></Modal>)
+      setModal(<Modal><Container><InvestChange onClose={closeInvestChange} /></Container></Modal>)
+    } else if (name === "RegisterReason") {
+      setModal(<Modal><Container><RegisterReason onClose={closeRegisterReason} /></Container></Modal>)
     }
   }
 
   const updateSelectedItemAndClose = (changeItem) => {
     if(changeItem) {
       getClientsDataChecked().forEach((application) => {
-        console.log(application)
-        dispatchApprovalStatusUpdate(application.serial, approvalStatusSelectedItem)
+        if (approvalStatusSelectedItem === "승인거부") {
+          openModal("RegisterReason")
+        } else {
+          dispatchApprovalStatusUpdate(application.serial, approvalStatusSelectedItem)
+        }
       });
       setPrevApprovalStatusSelectedItem(approvalStatusSelectedItem);
     } else {
