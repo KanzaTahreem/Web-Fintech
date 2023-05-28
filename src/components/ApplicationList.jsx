@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import ClientsTable from './ClientsTable';
 import Dropdown from './Dropdown';
 import styles from '../styles/app.module.css';
 import { Modal } from './Modal';
 import InvestChange from './InvestChange';
 import Container from './Container';
-import ClientsData from './ClientsData';
+import { useSelector } from 'react-redux';
+import { updateApprovalStatus } from '../redux/clientsDataReducer';
 
 const ApplicationList = ({displayPopup, closePopup}) => {
   const tabItems = [
@@ -28,27 +30,19 @@ const ApplicationList = ({displayPopup, closePopup}) => {
   ];
 
   const [modal, setModal] = useState(<></>);
-  const [selectedApplications, setSelectedApplications] = useState([]);
   const [approvalStatusSelectedItem, setApprovalStatusSelectedItem] = useState(null);
   const [prevApprovalStatusSelectedItem, setPrevApprovalStatusSelectedItem] = useState(null);
   const [menuItemsSelectedItems, setMenuItemsSelectedItems] = useState(menus.map(() => null));
-  const [clientsData, setClientsData] = useState(ClientsData);
-
-  const handleCheckboxChange = (label) => {
-    if (selectedApplications.includes(label)) {
-      setSelectedApplications(selectedApplications.filter(app => app !== label));
-    } else {
-      setSelectedApplications([...selectedApplications, label]);
-    }
-  };
+  const clientsData = useSelector((state) => state.clientsData.data);
+  const dispatch = useDispatch();
 
   const handleSave = (e) => {
     e.preventDefault();
-    if (selectedApplications.length === 0) {
-      displayPopup('No applications selected', closePopup, null);
+    if (clientsData && getClientsDataChecked().length) {
+      displayPopup("saved", closePopup, null);
       return;
     }
-    displayPopup("saved", closePopup, null);
+    displayPopup('No applications selected', closePopup, null);
   }
 
   const onClose = () => setModal(<></>);
@@ -61,11 +55,10 @@ const ApplicationList = ({displayPopup, closePopup}) => {
 
   const updateSelectedItemAndClose = (changeItem) => {
     if(changeItem) {
-      selectedApplications.forEach((application) => {
+      getClientsDataChecked().forEach((application) => {
         console.log(application)
-        updateApprovalStatus(application, approvalStatusSelectedItem)
+        dispatchApprovalStatusUpdate(application.serial, approvalStatusSelectedItem)
       });
-      setSelectedApplications([]);
       setPrevApprovalStatusSelectedItem(approvalStatusSelectedItem);
     } else {
       setApprovalStatusSelectedItem(prevApprovalStatusSelectedItem)
@@ -73,16 +66,8 @@ const ApplicationList = ({displayPopup, closePopup}) => {
     closePopup();
   }
 
-  const updateApprovalStatus = (i, status) => {
-    setClientsData(clientsData.map((client) => {
-      if (client.serial === i) {
-        return {
-          ...client,
-          approvalStatus: status
-        };
-      }
-      return client;
-    }))
+  const dispatchApprovalStatusUpdate = (i, status) => {
+    dispatch(updateApprovalStatus({serial: i, approvalStatus: status}));
   };
 
   useEffect(() => {
@@ -100,6 +85,8 @@ const ApplicationList = ({displayPopup, closePopup}) => {
       }
     }
   }, [approvalStatusSelectedItem])
+
+  const getClientsDataChecked = () => clientsData ? clientsData.filter((client) => client.checked) : [];
 
   return (
     <section className={styles.member_management}>
@@ -141,30 +128,26 @@ const ApplicationList = ({displayPopup, closePopup}) => {
             등록
           </button>
           <div>
-            <p>선택한 {selectedApplications.length}건</p>
+            <p>선택한 {getClientsDataChecked().length}건</p>
             <Dropdown
               buttonText="승인상태 변경"
               menuItems={approvalStatus}
               selectedItem={prevApprovalStatusSelectedItem}
               setSelectedItem={setApprovalStatusSelectedItem}
-              enabled={selectedApplications.length}
+              enabled={getClientsDataChecked().length}
             />
             <button
               type="button"
               className={styles.btn}
               onClick={handleSave}
-              disabled={selectedApplications.length > 0}
+              disabled={getClientsDataChecked().length > 0}
             >
               저장
             </button>
           </div>
         </div>
       </div>
-      <ClientsTable
-        selectedApplications={selectedApplications}
-        onChange={handleCheckboxChange}
-        clientsData={clientsData}
-      />
+      <ClientsTable  />
     </section>
   );
 };

@@ -2,14 +2,19 @@ import React from 'react';
 import Checkbox from './Checkbox';
 import styles from '../styles/dashboard.module.css';
 import modalStyles from '../styles/modal.module.css';
+import { useDispatch } from 'react-redux';
+import { selectUnSelectApplication } from '../redux/clientsDataReducer';
 
-const TableRow = ({ item, selectedApplications, onChange, displayPopup, closePopup }) => {
-  const { serial, previousType, applicationType, docs, applicationDate, approvalStatus, reason, approvalDate, admin } = item;
-  const isChecked = selectedApplications.includes(serial);
+const TableRow = ({ item, displayPopup, closePopup, key }) => {
+  const { serial, previousType, applicationType, docs, applicationDate, approvalStatus, reason, approvalDate, admin, checked } = item;
+  const dispatch = useDispatch();
 
   const handleCheckboxChange = () => {
     if (approvalStatus !== '승인거부' && approvalStatus !== '승인완료') {
-      onChange(serial);
+      dispatch(selectUnSelectApplication({
+        checked: !checked,
+        serial
+      }));
     }
   };
 
@@ -29,7 +34,7 @@ const TableRow = ({ item, selectedApplications, onChange, displayPopup, closePop
     if ( checkboxDisabled() ) {
       return modalStyles["disabled"];
     }
-    return `${isChecked ? modalStyles["checked"] : ""} ${modalStyles.checkbox}`;
+    return `${checked ? modalStyles["checked"] : ""} ${modalStyles.checkbox}`;
   }
 
   const onCheckBoxChange = (e) => {
@@ -42,11 +47,11 @@ const TableRow = ({ item, selectedApplications, onChange, displayPopup, closePop
   }
 
   return (
-    <tr className={styles.customer}>
+    <tr className={styles.customer} key={key}>
       <td className={styles.checkbox}>
         <Checkbox
           label=""
-          checked={isChecked}
+          checked={checked}
           onChange={onCheckBoxChange}
           getClassName={getClassNameForCheckbox}
         />

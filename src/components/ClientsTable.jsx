@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import TableHead from './TableHead'
 import TableRow from './TableRow'
 import leftDoubleArrow from '../assets/images/double_left_arrow.svg'
@@ -8,20 +9,20 @@ import rightArrow from '../assets/images/right_arrow.svg'
 import styles from '../styles/dashboard.module.css';
 import Container from './Container';
 
-const ClientsTable = ({ selectedApplications, onChange, clientsData }) => {
+const ClientsTable = () => {
+  const clientsData = useSelector((state) => state.clientsData.data);
+
   return (
     <>
       <div className={styles.clients_table}>
         <table>
           <TableHead />
           <tbody>
-          {clientsData.map((item, index) => (
+          {clientsData && clientsData.map((item) => (
               <Container>
                 <TableRow
-                  key={index}
+                  key={item.serial}
                   item={item}
-                  selectedApplications={selectedApplications}
-                  onChange={onChange}
                 />
               </Container>
             ))

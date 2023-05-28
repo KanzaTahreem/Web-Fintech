@@ -9,6 +9,7 @@ const ClientsData = [
     reason: '',
     approvalDate: '',
     admin: '',
+    checked: false
   },
   {
     serial: 2,
@@ -19,7 +20,8 @@ const ClientsData = [
     approvalStatus: '승인거부',
     reason: '서류 식별 불가 금융투자업자에 계좌를 개설한지 1년 미만으로 전문투자자 승인 불가',
     approvalDate: '2023-01-10 09:00:00',
-    admin: '김관리자'
+    admin: '김관리자',
+    checked: false
   },
   {
     serial: 3,
@@ -30,7 +32,8 @@ const ClientsData = [
     approvalStatus: '승인완료',
     reason: '',
     approvalDate: '2023-01-10 09:00:00',
-    admin: '김관리자'
+    admin: '김관리자',
+    checked: false
   },
 
   {
@@ -42,7 +45,8 @@ const ClientsData = [
     approvalStatus: '승인대기',
     reason: '',
     approvalDate: '',
-    admin: ''
+    admin: '',
+    checked: false
   },
   {
     serial: 5,
@@ -53,7 +57,8 @@ const ClientsData = [
     approvalStatus: '승인거부',
     reason: '서류 식별 불가 금융투자업자에 계좌를 개설한지 1년 미만으로 전문투자자 승인 불가',
     approvalDate: '2023-01-10 09:00:00',
-    admin: '김관리자'
+    admin: '김관리자',
+    checked: false
   },
   {
     serial: 6,
@@ -64,7 +69,8 @@ const ClientsData = [
     approvalStatus: '승인완료',
     reason: '',
     approvalDate: '2023-01-10 09:00:00',
-    admin: '김관리자'
+    admin: '김관리자',
+    checked: false
   },
 
   {
@@ -76,7 +82,8 @@ const ClientsData = [
     approvalStatus: '승인대기',
     reason: '',
     approvalDate: '',
-    admin: ''
+    admin: '',
+    checked: false
   },
   {
     serial: 8,
@@ -87,7 +94,8 @@ const ClientsData = [
     approvalStatus: '승인거부',
     reason: '서류 식별 불가 금융투자업자에 계좌를 개설한지 1년 미만으로 전문투자자 승인 불가',
     approvalDate: '2023-01-10 09:00:00',
-    admin: '김관리자'
+    admin: '김관리자',
+    checked: false
   },
   {
     serial: 9,
@@ -98,7 +106,8 @@ const ClientsData = [
     approvalStatus: '승인완료',
     reason: '',
     approvalDate: '2023-01-10 09:00:00',
-    admin: '김관리자'
+    admin: '김관리자',
+    checked: false
   },
 
   {
@@ -110,7 +119,8 @@ const ClientsData = [
     approvalStatus: '승인대기',
     reason: '',
     approvalDate: '',
-    admin: ''
+    admin: '',
+    checked: false
   },
   {
     serial: 11,
@@ -121,7 +131,8 @@ const ClientsData = [
     approvalStatus: '승인거부',
     reason: '서류 식별 불가 금융투자업자에 계좌를 개설한지 1년 미만으로 전문투자자 승인 불가',
     approvalDate: '2023-01-10 09:00:00',
-    admin: '김관리자'
+    admin: '김관리자',
+    checked: false
   },
   {
     serial: 12,
@@ -132,7 +143,8 @@ const ClientsData = [
     approvalStatus: '승인완료',
     reason: '',
     approvalDate: '2023-01-10 09:00:00',
-    admin: '김관리자'
+    admin: '김관리자',
+    checked: false
   },
 
   {
@@ -144,7 +156,8 @@ const ClientsData = [
     approvalStatus: '승인대기',
     reason: '',
     approvalDate: '',
-    admin: ''
+    admin: '',
+    checked: false
   },
   {
     serial: 14,
@@ -155,7 +168,8 @@ const ClientsData = [
     approvalStatus: '승인거부',
     reason: '서류 식별 불가 금융투자업자에 계좌를 개설한지 1년 미만으로 전문투자자 승인 불가',
     approvalDate: '2023-01-10 09:00:00',
-    admin: '김관리자'
+    admin: '김관리자',
+    checked: false
   },
   {
     serial: 15,
@@ -166,7 +180,8 @@ const ClientsData = [
     approvalStatus: '승인완료',
     reason: '',
     approvalDate: '2023-01-10 09:00:00',
-    admin: '김관리자'
+    admin: '김관리자',
+    checked: false
   },
 ];
 
