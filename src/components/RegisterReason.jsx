@@ -5,9 +5,8 @@ import styles from '../styles/modal.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { resetRegisterModal, toggleCheckbox, updateTextarea } from '../redux/registerReducer';
 import InputField from './InputField';
-import { resolvePath } from 'react-router-dom';
 
-const RegisterReason = ({ displayPopup, closePopup, onClose }) => {
+const RegisterReason = ({ displayPopup, closePopup, onClose, onApproval }) => {
   const dispatch = useDispatch();
   const checkboxes = useSelector((state) => state.register.checkboxes);
   const textarea = useSelector((state) => state.register.textarea)
@@ -21,6 +20,13 @@ const RegisterReason = ({ displayPopup, closePopup, onClose }) => {
     dispatch(updateTextarea(value));
   };
 
+  const closePopupEntirely = () => {
+    dispatch(resetRegisterModal())
+    onApproval();
+    closePopup();
+    onClose();
+  }
+
   const handleSave = (event) => {
     event.preventDefault();
 
@@ -29,7 +35,7 @@ const RegisterReason = ({ displayPopup, closePopup, onClose }) => {
     if ((!isAnyCheckboxChecked && textarea.trim() === '') || (checkboxes['직접 입력'] && textarea.trim() === '')) {
       displayPopup('Either checkboxes or textarea must be filled', closePopup, null);
     } else {
-      displayPopup('Saved', closePopup, null);
+      displayPopup('Saved', closePopupEntirely, null);
     }
   };
 

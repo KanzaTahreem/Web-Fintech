@@ -45,8 +45,8 @@ const registerReasonReducer = (state = initialState, action) => {
     case UPDATE_TEXTAREA:
       return { ...state, textarea: action.payload };
 
-      case RESET_REGISTER_MODAL:
-        return initialState;
+    case RESET_REGISTER_MODAL:
+      return initialState;
     default:
       return state;
   }

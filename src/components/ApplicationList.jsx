@@ -56,23 +56,37 @@ const ApplicationList = ({displayPopup, closePopup}) => {
     setModal(<></>);
   }
 
+  const updateAllSelected = () => {
+    getClientsDataChecked().forEach((application) => {
+      dispatchApprovalStatusUpdate(application.serial, approvalStatusSelectedItem);
+    });
+  }
+
   const openModal = (name) => {
     if (name === "InvestChange") {
-      setModal(<Modal><Container><InvestChange onClose={closeInvestChange} /></Container></Modal>)
+      setModal(
+        <Modal>
+          <Container>
+            <InvestChange onClose={closeInvestChange} />
+          </Container>
+        </Modal>)
     } else if (name === "RegisterReason") {
-      setModal(<Modal><Container><RegisterReason onClose={closeRegisterReason} /></Container></Modal>)
+      setModal(
+        <Modal>
+          <Container>
+            <RegisterReason onClose={closeRegisterReason} onApproval={updateAllSelected} />
+          </Container>
+        </Modal>
+      )
     }
   }
 
   const updateSelectedItemAndClose = (changeItem) => {
     if(changeItem) {
-      getClientsDataChecked().forEach((application) => {
-        if (approvalStatusSelectedItem === "승인거부") {
-          openModal("RegisterReason")
-        } else {
-          dispatchApprovalStatusUpdate(application.serial, approvalStatusSelectedItem)
-        }
-      });
+      if (approvalStatusSelectedItem === approvalStatus[1]) {
+        openModal("RegisterReason")
+      }
+      updateAllSelected();
       setPrevApprovalStatusSelectedItem(approvalStatusSelectedItem);
     } else {
       setApprovalStatusSelectedItem(prevApprovalStatusSelectedItem)
