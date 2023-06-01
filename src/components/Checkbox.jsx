@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '../styles/app.module.css';
 
-const Checkbox = ({ label, checked, onChange, getClassName }) => {
+const Checkbox = ({ label, checked, onChange, getClassName, disabled }) => {
 
   const handleCheck = () => {
     onChange(label);
@@ -12,6 +12,7 @@ const Checkbox = ({ label, checked, onChange, getClassName }) => {
       <label className={styles.label}>
         <input
           type="checkbox"
+          disabled={disabled}
           checked={checked}
           className={getClassName ? getClassName() : `${checked ? styles.checked : ''} ${styles.checkbox}`}
           onChange={handleCheck}

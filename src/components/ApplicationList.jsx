@@ -56,9 +56,9 @@ const ApplicationList = ({displayPopup, closePopup}) => {
     setModal(<></>);
   }
 
-  const updateAllSelected = (reasonOfDenial) => {
+  const updateAllSelected = (reasonOfDenial, memberNumber, memberName) => {
     getClientsDataChecked().forEach((application) => {
-      dispatchApprovalStatusUpdate(application.serial, approvalStatusSelectedItem, reasonOfDenial);
+      dispatchApprovalStatusUpdate(application.serial, approvalStatusSelectedItem, reasonOfDenial, memberNumber, memberName);
     });
   }
 
@@ -74,7 +74,7 @@ const ApplicationList = ({displayPopup, closePopup}) => {
       setModal(
         <Modal>
           <Container>
-            <RegisterReason onClose={closeRegisterReason} onApproval={updateAllSelected} />
+            <RegisterReason onClose={closeRegisterReason} onApproval={updateAllSelected} openReason={-1} />
           </Container>
         </Modal>
       )
@@ -95,8 +95,8 @@ const ApplicationList = ({displayPopup, closePopup}) => {
     closePopup();
   }
 
-  const dispatchApprovalStatusUpdate = (i, status, reasonOfDenial) => {
-    dispatch(updateApprovalStatus({serial: i, approvalStatus: status, reasonOfDenial}));
+  const dispatchApprovalStatusUpdate = (i, status, reasonOfDenial, memberNumber, memberName) => {
+    dispatch(updateApprovalStatus({serial: i, approvalStatus: status, reasonOfDenial, memberNumber, memberName}));
   };
 
   useEffect(() => {

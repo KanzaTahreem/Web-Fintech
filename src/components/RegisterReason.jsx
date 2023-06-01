@@ -1,15 +1,37 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { HiXMark } from 'react-icons/hi2';
 import Checkbox from './Checkbox';
 import styles from '../styles/app.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { resetRegisterModal, toggleCheckbox, updateTextarea } from '../redux/registerReducer';
 import InputField from './InputField';
+import { selectUnSelectApplication } from '../redux/clientsDataReducer';
 
-const RegisterReason = ({ displayPopup, closePopup, onClose, onApproval }) => {
+const RegisterReason = ({ displayPopup, closePopup, onClose, onApproval, openReason }) => {
   const dispatch = useDispatch();
   const checkboxes = useSelector((state) => state.register.checkboxes);
-  const textarea = useSelector((state) => state.register.textarea)
+  const textarea = useSelector((state) => state.register.textarea);
+  const clientsData = useSelector((state) => state.clientsData.data);
+  const [memberName, setMemberName] = useState("");
+  const [memberNumber, setMemberNumber] = useState("");
+  const [checkBoxList, setCheckBoxList] = useState(<></>);
+
+  useEffect(() => {
+    setCheckBoxList(getCheckBoxList());
+  }, [checkboxes]);
+
+  useEffect(() => {
+    if (clientsData) {
+      const modalData = clientsData.filter((data) => data.serial === openReason)[0] || null;
+      if (modalData) {
+        setCheckBoxList(getCheckBoxList(modalData));
+        setMemberName(modalData.name || "");
+        setMemberNumber(modalData.number || "");
+      }
+    } else {
+      setCheckBoxList(getCheckBoxList());
+    }
+  }, [clientsData]);
 
   const handleCheckboxChange = (label) => {
     dispatch(toggleCheckbox(label));
@@ -31,7 +53,7 @@ const RegisterReason = ({ displayPopup, closePopup, onClose, onApproval }) => {
     if (reason === '직접 입력') {
       reason = textarea
     }
-    onApproval(reason);
+    onApproval(reason, memberName, memberNumber);
 
     closePopup();
     onClose();
@@ -54,6 +76,48 @@ const RegisterReason = ({ displayPopup, closePopup, onClose, onApproval }) => {
     onClose();
   }
 
+  const getCheckBoxList = (modalData) => {
+    let checkboxList = [];
+    let found = false;
+    if (openReason > 0 && modalData) {
+      for (const [label] of Object.entries(checkboxes)){
+        if (modalData.reason === label) {
+          found = true;
+        }
+        checkboxList.push(<Checkbox
+          key={label}
+          label={label}
+          checked={(modalData.reason === label) || (!found && label === "직접 입력")}
+          onChange={() => handleCheckboxChange(label)}
+          disabled={true}
+        />)
+      }
+    } else {
+      console.log("HEREEE")
+      checkboxList = Object.entries(checkboxes).map(([label, checked]) => (
+        <Checkbox
+          key={label}
+          label={label}
+          checked={checked}
+          onChange={() => handleCheckboxChange(label)}
+          disabled={false}
+        />
+      ))
+    }
+    return (
+      <>
+        {checkboxList}
+        <textarea
+          onChange={handleTextareaChange}
+          className={`${styles.add_reason} ${checkboxes['직접 입력'] ? styles.textarea_enabled : ''}`}
+          placeholder="사유 입력"
+          disabled={!checkboxes['직접 입력']}
+          value={found ? "" : modalData?.reason || ""}
+        ></textarea>
+      </>
+    );
+  }
+
   return (
     <section className={styles.modal}>
       <div>
@@ -62,32 +126,27 @@ const RegisterReason = ({ displayPopup, closePopup, onClose, onApproval }) => {
       </div>
       <div className={styles.model_content}>
         <form>
-          <InputField text={"회원번호"} placeholder={"abc111, abc222"} />
-          <InputField text={"회원명/법인명"} placeholder={"김길동, ㈜가나다라투자"} />
+          <InputField text={"회원번호"} placeholder={"abc111, abc222"} value={memberName} onChange={(e) => setMemberName(e.target.value)} enabled={openReason} />
+          <InputField text={"회원명/법인명"} placeholder={"김길동, ㈜가나다라투자"} value={memberNumber} onChange={(e) => setMemberNumber(e.target.value)} enabled={openReason} />
           <div>
             <label htmlFor="text">승인거부 사유</label>
             <div className={styles.checkbox_wrapper}>
-              {Object.entries(checkboxes).map(([label, checked]) => (
-                <Checkbox
-                  key={label}
-                  label={label}
-                  checked={checked}
-                  onChange={() => handleCheckboxChange(label)}
-                  disabled={
-                    (Object.values(checkboxes).some((value) => value) && !checked) ||
-                    (label === '직접 입력' && checked)
-                  }
-                />
-              ))}
-              <textarea
-                onChange={handleTextareaChange}
-                className={`${styles.add_reason} ${checkboxes['직접 입력'] ? styles.textarea_enabled : ''}`}
-                placeholder="사유 입력"
-                disabled={!checkboxes['직접 입력']}
-              ></textarea>
+              {checkBoxList}
             </div>
           </div>
         </form>
+        {openReason > 0 && <form>
+          <div className={styles.row_div}>
+            <div>
+              <label htmlFor="text">최근저장일시</label>
+              <input type="text" name="text" placeholder="2022-01-01 09:00:00" />
+            </div>
+            <div>
+              <label htmlFor="text">관리자</label>
+              <input type="text" name="text" placeholder="김관리자" />
+            </div>
+          </div>
+        </form>}
       </div>
       <div className={styles.model_btns}>
         <button className={styles.save_btn} onClick={handleSave}>
