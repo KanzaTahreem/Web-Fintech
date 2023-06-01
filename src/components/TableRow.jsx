@@ -9,7 +9,7 @@ import { Modal } from './Modal';
 import Container from './Container';
 import RegisterReason from './RegisterReason';
 
-const TableRow = ({ item, displayPopup, closePopup }) => {
+const TableRow = ({ item, displayPopup, closePopup, selectAll }) => {
   const { serial, previousType, applicationType, docs, applicationDate, approvalStatus, reason, approvalDate, admin, checked } = item;
   const dispatch = useDispatch();
   const [modal, setModal] = useState(<></>);
@@ -75,7 +75,7 @@ const TableRow = ({ item, displayPopup, closePopup }) => {
       <td className={styles.checkbox}>
         <Checkbox
           label=""
-          checked={checked}
+          checked={checked || selectAll}
           onChange={onCheckBoxChange}
           getClassName={getClassNameForCheckbox}
         />

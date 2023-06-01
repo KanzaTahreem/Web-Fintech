@@ -1,11 +1,17 @@
 import React from 'react';
+import Checkbox from './Checkbox';
 import styles from '../styles/app.module.css';
 
-const TableHead = () => {
+const TableHead = ({ handleCheckAll }) => {
   return (
     <thead>
       <tr className={styles.labels}>
-        <th className={styles.checkbox}></th>
+        <th className={styles.checkbox}>
+          <Checkbox
+            type="checkbox"
+            onChange={handleCheckAll}
+          />
+        </th>
         <th className={styles.serial}>NO</th>
         <th>기존유형</th>
         <th>신청유형</th>

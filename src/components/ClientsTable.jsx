@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import TableHead from './TableHead'
 import TableRow from './TableRow'
 import leftDoubleArrow from '../assets/images/double_left_arrow.svg'
@@ -8,15 +8,30 @@ import leftArrow from '../assets/images/left_arrow.svg'
 import rightArrow from '../assets/images/right_arrow.svg'
 import styles from '../styles/app.module.css';
 import Container from './Container';
+import { selectUnSelectApplication } from '../redux/clientsDataReducer';
 
 const ClientsTable = () => {
   const clientsData = useSelector((state) => state.clientsData.data);
+  const [selectAll, setSelectAll] = useState(false);
+  const dispatch = useDispatch();
 
+
+  const handleCheckAll = () => {
+    setSelectAll(!selectAll);
+    clientsData.forEach((item) => {
+      if (item.approvalStatus !== '승인거부' && item.approvalStatus !== '승인완료') {
+        dispatch(selectUnSelectApplication({
+          checked: !selectAll,
+          serial: item.serial
+        }));
+      }
+    });
+  };
   return (
     <>
       <div className={styles.clients_table}>
         <table>
-          <TableHead />
+          <TableHead handleCheckAll={handleCheckAll} />
           <tbody>
           {clientsData && clientsData.map((item) => (
               <Container>
