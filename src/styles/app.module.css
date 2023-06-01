@@ -303,17 +303,17 @@ td {
   padding: 0.125rem 0.625rem;
 }
 
-.waiting span {
+.waiting > span {
   color: #9A3412;
   background-color: #FFEDD5;
 }
 
-.denied span {
+.denied > span {
   color: #991B1B;
   background-color: #FEE2E2
 }
 
-.approved span {
+.approved > span {
   color: #166534;
   background-color: #DCFCE7;
 }
@@ -654,6 +654,11 @@ input[type="checkbox"]:checked:before,
   transform: rotate(45deg);
 }
 
+input[type="checkbox"]:disabled {
+  background: #DDE0E6;
+  border: 1px solid #B1B4BB;
+}
+
 .checkbox_wrapper span {
   letter-spacing: -0.02px;
   color: #0B101A;
@@ -699,11 +704,6 @@ textarea::placeholder {
   background: white;
 }
 
-
-.check_reason {
-  height: 42.938rem;
-}
-
 .row_div {
   justify-content: space-between;
 }
@@ -718,10 +718,29 @@ textarea::placeholder {
   min-width: 220px;
 }
 
-.check_reason form:first-child {
-  margin-bottom: 20px;
+.modal form:nth-child(2) {
+  margin-top: 20px;
+  border: none;
 }
 
-.check_reason form:nth-child(2) {
-  border: none;
+/* ---------- view documents ---------- */
+
+.view_docs {
+  height: 58.563rem;
+}
+
+.view_docs form {
+  border-radius: 10px;
+  height: 45rem;
+}
+
+.view_docs label {
+  height: 44.8rem; 
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.view_docs input {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
 }
