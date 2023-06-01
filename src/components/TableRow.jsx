@@ -1,13 +1,18 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Checkbox from './Checkbox';
 import styles from '../styles/app.module.css';
 import modalStyles from '../styles/app.module.css';
 import { useDispatch } from 'react-redux';
 import { selectUnSelectApplication } from '../redux/clientsDataReducer';
+import CustomTooltip from './CustomTooltip';
+import { Modal } from './Modal';
+import Container from './Container';
+import RegisterReason from './RegisterReason';
 
-const TableRow = ({ item, displayPopup, closePopup, key }) => {
+const TableRow = ({ item, displayPopup, closePopup }) => {
   const { serial, previousType, applicationType, docs, applicationDate, approvalStatus, reason, approvalDate, admin, checked } = item;
   const dispatch = useDispatch();
+  const [modal, setModal] = useState(<></>);
 
   const handleCheckboxChange = () => {
     if (approvalStatus !== '승인거부' && approvalStatus !== '승인완료') {
@@ -46,8 +51,27 @@ const TableRow = ({ item, displayPopup, closePopup, key }) => {
     }
   }
 
+  const closeRegisterReason = () => {
+    setModal(<></>);
+  };
+
+  const openDeniedReasonsComponent = () => {
+    setModal(
+      <Modal>
+        <Container>
+          <RegisterReason onClose={closeRegisterReason} openReason={serial} />
+        </Container>
+      </Modal>
+    )
+  }
+
+  const ApprovalStatusComponent = ({approvalStatus}) => (<p data-tooltip-id={"row-tooltip"+serial}>
+    <CustomTooltip id={"row-tooltip"+serial} text="Check details" onClick={openDeniedReasonsComponent} >
+      <div>{approvalStatus}</div>
+    </CustomTooltip>
+  </p>);
   return (
-    <tr className={styles.customer} key={key}>
+    <tr className={styles.customer}>
       <td className={styles.checkbox}>
         <Checkbox
           label=""
@@ -61,10 +85,13 @@ const TableRow = ({ item, displayPopup, closePopup, key }) => {
       <td>{applicationType}</td>
       <td className={styles.docs}><span>{docs}</span></td>
       <td className={styles.date}>{applicationDate}</td>
-      <td className={getClassName()}><span>{approvalStatus}</span></td>
+      <td className={getClassName()}><span>{
+        approvalStatus === '승인거부' ? <ApprovalStatusComponent approvalStatus={approvalStatus}/>: approvalStatus
+        }</span></td>
       <td className={styles.reason}>{reason}</td>
       <td className={styles.date}>{approvalDate}</td>
       <td>{admin}</td>
+      {modal}
     </tr>
   );
 };
