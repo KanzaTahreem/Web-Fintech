@@ -22,13 +22,12 @@ const ApplicationList = ({displayPopup, closePopup}) => {
     '상담내역 관리',
     '1:1문의내역 조회',
   ];
-
-  const approvalStatus = ['승인완료', '승인거부'];
   const menus = [
     { buttonText: '승인여부 전체', menuItems: ['승인여부 전체', '승인대기', '승인완료', '승인거부'], selectedItem: null },
     { buttonText: '신청일시순', menuItems: ['신청일시순', '승인일시순'], selectedItem: null },
     { buttonText: '50개씩 보기', menuItems: ['25개씩 보기', '100개씩 보기'], selectedItem: null },
   ];
+  const approvalStatus = ['승인완료', '승인거부'];
 
   const [modal, setModal] = useState(<></>);
   const [approvalStatusSelectedItem, setApprovalStatusSelectedItem] = useState(null);
@@ -117,6 +116,13 @@ const ApplicationList = ({displayPopup, closePopup}) => {
 
   const getClientsDataChecked = () => clientsData ? clientsData.filter((client) => client.checked) : [];
 
+  const getPendingApprovalsCount = () => {
+    if (clientsData) {
+      return clientsData.filter((client) => client.approvalStatus === '승인대기').length;
+    }
+    return 0;
+  };
+
   return (
     <section className={styles.application_list}>
       {modal}
@@ -133,7 +139,8 @@ const ApplicationList = ({displayPopup, closePopup}) => {
       <div className={styles.middle_row}>
         <div className={styles.upper_middle_row}>
           <h2 className={styles.headline}>
-            신청 목록<span>(총 100명 | 승인대기 1건)</span>
+            신청 목록
+            <span>(총 {clientsData ? clientsData.length : 0}명 | 승인대기 {getPendingApprovalsCount()}건)</span>
           </h2>
           <div className={styles.all_dropdowns}>
             {menus.map((menu, index) => (
