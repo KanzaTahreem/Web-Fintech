@@ -5,6 +5,7 @@ import RegisterReason from './components/RegisterReason';
 import InvestChange from './components/InvestChange';
 import CheckReason from './components/CheckReason';
 import Container from './components/Container';
+import ViewDocuments from './components/ViewDocuments';
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
       <Route exact path="/modals" element={<Container><InvestChange /></Container>} />
       <Route exact path="/registration" element={<Container><RegisterReason /></Container>} />
       <Route exact path="/check-reason" element={<CheckReason />} />
+      <Route exact path="/view" element={<ViewDocuments />} />
     </Routes>
   );
 }
