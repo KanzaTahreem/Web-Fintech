@@ -3,11 +3,12 @@ import Checkbox from './Checkbox';
 import styles from '../styles/app.module.css';
 import modalStyles from '../styles/app.module.css';
 import { useDispatch } from 'react-redux';
-import { selectUnSelectApplication } from '../redux/clientsDataReducer';
+import { selectUnSelectApplication } from '../redux/applicationsDataReducer';
 import CustomTooltip from './CustomTooltip';
 import { Modal } from './Modal';
 import Container from './Container';
 import RegisterReason from './RegisterReason';
+import ViewDocuments from './ViewDocuments';
 
 const TableRow = ({ item, displayPopup, closePopup, selectAll }) => {
   const { serial, previousType, applicationType, docs, applicationDate, approvalStatus, reason, approvalDate, admin, checked } = item;
@@ -21,6 +22,20 @@ const TableRow = ({ item, displayPopup, closePopup, selectAll }) => {
         serial
       }));
     }
+  };
+
+  const onClose = () => {
+    setModal(<></>);
+  };
+
+  const openDocs = (docs) => {
+    setModal(
+      <Modal>
+        <Container>
+          <ViewDocuments docs={docs} onClose={onClose} />
+        </Container>
+      </Modal>
+    );
   };
 
   const getClassName = () => {
@@ -83,7 +98,7 @@ const TableRow = ({ item, displayPopup, closePopup, selectAll }) => {
       <td className={styles.serial}>{serial}</td>
       <td>{previousType}</td>
       <td>{applicationType}</td>
-      <td className={styles.docs}><span>{docs}</span></td>
+      <td className={styles.docs} onClick={() => openDocs(docs)}><span>보기</span></td>
       <td className={styles.date}>{applicationDate}</td>
       <td className={getClassName()}><span>{
         approvalStatus === '승인거부' ? <ApprovalStatusComponent approvalStatus={approvalStatus}/>: approvalStatus
