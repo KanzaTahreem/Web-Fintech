@@ -7,7 +7,7 @@ import { Modal } from './Modal';
 import InvestChange from './InvestChange';
 import Container from './Container';
 import { useSelector } from 'react-redux';
-import { updateApprovalStatus } from '../redux/applicationsDataReducer';
+import { updateApprovalStatus, updateFilter, updateLimit, updateSortOrder } from '../redux/applicationsDataReducer';
 import RegisterReason from './RegisterReason';
 
 const ApplicationList = ({displayPopup, closePopup}) => {
@@ -23,7 +23,7 @@ const ApplicationList = ({displayPopup, closePopup}) => {
   const [approvalStatusSelectedItem, setApprovalStatusSelectedItem] = useState(null);
   const [prevApprovalStatusSelectedItem, setPrevApprovalStatusSelectedItem] = useState(null);
   const [menuItemsSelectedItems, setMenuItemsSelectedItems] = useState(menus.map(() => null));
-  const applicationsData = useSelector((state) => state.applicationsData.data);
+  const applicationsData = useSelector((state) => state.applicationsData.filteredData);
   const dispatch = useDispatch();
 
   const handleSave = (e) => {
@@ -85,7 +85,14 @@ const ApplicationList = ({displayPopup, closePopup}) => {
   }
 
   const dispatchApprovalStatusUpdate = (i, status, reasonOfDenial, memberNumber, memberName) => {
-    dispatch(updateApprovalStatus({serial: i, approvalStatus: status, reasonOfDenial, memberNumber, memberName}));
+    dispatch(updateApprovalStatus({
+      serial: i,
+      approvalStatus: status,
+      approvalDate: `${new Date().toISOString().split('T')[0]} ${new Date().toLocaleTimeString()}`,
+      reasonOfDenial,
+      memberNumber,
+      memberName
+    }));
   };
 
   useEffect(() => {
@@ -144,6 +151,19 @@ const ApplicationList = ({displayPopup, closePopup}) => {
                   const updatedSelectedItems = [...menuItemsSelectedItems];
                   updatedSelectedItems[index] = item;
                   setMenuItemsSelectedItems(updatedSelectedItems);
+                  if (menu.buttonText === '승인여부 전체') {
+                    dispatch(updateFilter(item));
+                  } else if (menu.buttonText === '신청일시순') {
+                    dispatch(updateSortOrder(item));
+                  } else if (menu.buttonText === '50개씩 보기') {
+                    let limit = 50;
+                    if (item === '100개씩 보기') {
+                      limit = 100;
+                    } else if (item === '25개씩 보기') {
+                      limit = 25;
+                    }
+                    dispatch(updateLimit(limit));
+                  }
                 }}
               />
             ))}

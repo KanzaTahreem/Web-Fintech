@@ -11,7 +11,7 @@ import Container from './Container';
 import { selectUnSelectApplication } from '../redux/applicationsDataReducer';
 
 const ApplicationsTable = () => {
-  const applicationsData = useSelector((state) => state.applicationsData.data);
+  const applicationsData = useSelector((state) => state.applicationsData.filteredData);
   const [selectAll, setSelectAll] = useState(false);
   const dispatch = useDispatch();
 

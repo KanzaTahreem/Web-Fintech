@@ -11,7 +11,7 @@ const RegisterReason = ({ displayPopup, closePopup, onClose, onApproval, openRea
   const dispatch = useDispatch();
   const checkboxes = useSelector((state) => state.register.checkboxes);
   const textarea = useSelector((state) => state.register.textarea);
-  const applicationsData = useSelector((state) => state.applicationsData.data);
+  const applicationsData = useSelector((state) => state.applicationsData.filteredData);
   const [memberName, setMemberName] = useState("");
   const [memberNumber, setMemberNumber] = useState("");
   const [checkBoxList, setCheckBoxList] = useState(<></>);

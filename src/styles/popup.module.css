@@ -35,6 +35,12 @@
   font-size: 1.5rem;
 }
 
+.popup_content svg:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+  transition: all 0.2s ease-in-out;
+}
+
 .popup_content p {
   font-weight: bold;
   color: #101828;
@@ -50,7 +56,13 @@
   border: none;
   color: white;
   border: 1.5px solid #2A3958;
+  transition: all 0.2s ease-in-out;
+}
+
+.popup_btn:hover {
   cursor: pointer;
+  box-shadow: 4px 7px 6px -4px rgb(38 41 45 / 48%);
+  transition: all 0.2s ease-in-out;
 }
 
 .popup_cancel {

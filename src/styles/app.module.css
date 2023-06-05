@@ -175,15 +175,19 @@
   align-items: center;
   font-size: 1rem;
   border: none;
+  transition: all 0.2s ease-in-out;
 }
 
-.btn:hover {
+.btn:hover,
+ .model_btns button:hover {
   cursor: pointer;
-  box-shadow: 4px 7px 6px -4px rgb(37 38 39 / 30%);
+  box-shadow: 4px 7px 6px -4px rgb(38 41 45 / 48%);
+  transition: all 0.2s ease-in-out;
 }
 
 .btn:disabled {
-  opacity: 0.8;
+  opacity: 0.6;
+  box-shadow: none;
 }
 
 .lower_middle_row {
@@ -311,6 +315,10 @@ td {
 .denied > span {
   color: #991B1B;
   background-color: #FEE2E2
+}
+
+.denied:hover {
+  cursor: pointer;
 }
 
 .approved > span {
@@ -540,7 +548,7 @@ form input[type="file"] {
   background: #FFFFFF;
   box-shadow: 0px 20px 24px -4px rgba(16, 24, 40, 0.1), 0px 8px 8px -4px rgba(16, 24, 40, 0.04);
   border-radius: 12px;
-  min-height: 38.56rem;
+  /* min-height: 38.56rem; */
   width: 50rem;
 }
 
@@ -563,6 +571,12 @@ form input[type="file"] {
 .xmark {
   color: #5A616A;
   font-size: 1.5rem;
+}
+
+.xmark:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+  transition: all 0.2s ease-in-out;
 }
 
 .model_content {
@@ -590,6 +604,10 @@ label {
   font-weight: 700;
   font-size: 0.95rem;
   max-width: 9.375rem;
+}
+
+.checkbox label {
+  border-bottom: none;
 }
 
 input::placeholder {
@@ -632,7 +650,8 @@ input[type="checkbox"] {
 }
 
 input.checked,
-.chkChecked {
+.chkChecked,
+.checkbox:checked {
   background-color: #2A3958;
   position: relative;
 }
