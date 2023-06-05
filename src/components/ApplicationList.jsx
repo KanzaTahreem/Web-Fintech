@@ -1,27 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import ClientsTable from './ClientsTable';
+import ApplicationsTable from './ApplicationsTable';
 import Dropdown from './Dropdown';
 import styles from '../styles/app.module.css';
 import { Modal } from './Modal';
 import InvestChange from './InvestChange';
 import Container from './Container';
 import { useSelector } from 'react-redux';
-import { updateApprovalStatus } from '../redux/clientsDataReducer';
+import { updateApprovalStatus } from '../redux/applicationsDataReducer';
 import RegisterReason from './RegisterReason';
 
 const ApplicationList = ({displayPopup, closePopup}) => {
-  const tabItems = [
-    '기본정보 관리',
-    '투자유형 관리',
-    '입출금내역 조회',
-    '영업내역 조회',
-    '투자내역 조회',
-    '채권내역 조회',
-    'SMS 관리',
-    '상담내역 관리',
-    '1:1문의내역 조회',
-  ];
+  const tabItems = ['기본정보 관리', '투자유형 관리', '입출금내역 조회', '영업내역 조회', '투자내역 조회', '채권내역 조회', 'SMS 관리', '상담내역 관리', '1:1문의내역 조회' ];
   const menus = [
     { buttonText: '승인여부 전체', menuItems: ['승인여부 전체', '승인대기', '승인완료', '승인거부'], selectedItem: null },
     { buttonText: '신청일시순', menuItems: ['신청일시순', '승인일시순'], selectedItem: null },
@@ -33,16 +23,16 @@ const ApplicationList = ({displayPopup, closePopup}) => {
   const [approvalStatusSelectedItem, setApprovalStatusSelectedItem] = useState(null);
   const [prevApprovalStatusSelectedItem, setPrevApprovalStatusSelectedItem] = useState(null);
   const [menuItemsSelectedItems, setMenuItemsSelectedItems] = useState(menus.map(() => null));
-  const clientsData = useSelector((state) => state.clientsData.data);
+  const applicationsData = useSelector((state) => state.applicationsData.data);
   const dispatch = useDispatch();
 
   const handleSave = (e) => {
     e.preventDefault();
-    if (clientsData && getClientsDataChecked().length) {
-      displayPopup("saved", closePopup, null);
+    if (applicationsData && getApplicationsDataChecked().length) {
+      displayPopup("저장되었습니다.", closePopup, null);
       return;
     }
-    displayPopup('No applications selected', closePopup, null);
+    displayPopup('선택된 신청건이 없습니다.', closePopup, null);
   }
 
   const closeRegisterReason = () => {
@@ -56,7 +46,7 @@ const ApplicationList = ({displayPopup, closePopup}) => {
   }
 
   const updateAllSelected = (reasonOfDenial, memberNumber, memberName) => {
-    getClientsDataChecked().forEach((application) => {
+    getApplicationsDataChecked().forEach((application) => {
       dispatchApprovalStatusUpdate(application.serial, approvalStatusSelectedItem, reasonOfDenial, memberNumber, memberName);
     });
   }
@@ -114,11 +104,11 @@ const ApplicationList = ({displayPopup, closePopup}) => {
     }
   }, [approvalStatusSelectedItem])
 
-  const getClientsDataChecked = () => clientsData ? clientsData.filter((client) => client.checked) : [];
+  const getApplicationsDataChecked = () => applicationsData ? applicationsData.filter((client) => client.checked) : [];
 
   const getPendingApprovalsCount = () => {
-    if (clientsData) {
-      return clientsData.filter((client) => client.approvalStatus === '승인대기').length;
+    if (applicationsData) {
+      return applicationsData.filter((client) => client.approvalStatus === '승인대기').length;
     }
     return 0;
   };
@@ -140,7 +130,7 @@ const ApplicationList = ({displayPopup, closePopup}) => {
         <div className={styles.upper_middle_row}>
           <h2 className={styles.headline}>
             신청 목록
-            <span>(총 {clientsData ? clientsData.length : 0}명 | 승인대기 {getPendingApprovalsCount()}건)</span>
+            <span>(총 {applicationsData ? applicationsData.length : 0}명 | 승인대기 {getPendingApprovalsCount()}건)</span>
           </h2>
           <div className={styles.all_dropdowns}>
             {menus.map((menu, index) => (
@@ -164,26 +154,26 @@ const ApplicationList = ({displayPopup, closePopup}) => {
             등록
           </button>
           <div>
-            <p>선택한 {getClientsDataChecked().length}건</p>
+            <p>선택한 {getApplicationsDataChecked().length}건</p>
             <Dropdown
               buttonText="승인상태 변경"
               menuItems={approvalStatus}
               selectedItem={prevApprovalStatusSelectedItem}
               setSelectedItem={setApprovalStatusSelectedItem}
-              enabled={getClientsDataChecked().length}
+              enabled={getApplicationsDataChecked().length}
             />
             <button
               type="button"
               className={styles.btn}
               onClick={handleSave}
-              disabled={getClientsDataChecked().length > 0}
+              disabled={getApplicationsDataChecked().length > 0}
             >
               저장
             </button>
           </div>
         </div>
       </div>
-      <ClientsTable  />
+      <ApplicationsTable />
     </section>
   );
 };

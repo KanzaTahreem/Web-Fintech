@@ -200,9 +200,9 @@
   margin-right: 1rem;
 }
 
-/* ---------- Clients Table ---------- */
+/* ---------- applications Table ---------- */
 
-.clients_table {
+.applications_table {
   white-space: nowrap;
   overflow-x: scroll;
 }
@@ -320,25 +320,25 @@ td {
 
 /* ---------- Scrollbar ---------- */
 
-.clients_table::-webkit-scrollbar {
+.applications_table::-webkit-scrollbar {
   height: 8px;
   background: #E6E8EA;
   border-radius: 20px;
 }
 
-.clients_table::-webkit-scrollbar-thumb {
+.applications_table::-webkit-scrollbar-thumb {
   background-color: #6F80A0;
   border-radius: 20px;
   transform: matrix(0, 1, 1, 0, 0, 0);
   width: 10px;
 }
 
-.clients_table::-webkit-scrollbar-thumb:hover {
+.applications_table::-webkit-scrollbar-thumb:hover {
   background-color: #2A3958;
 }
 
 
-.clients_table .checkbox label {
+.applications_table .checkbox label {
   min-width: auto;
   background: transparent;
 }

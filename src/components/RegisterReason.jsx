@@ -5,13 +5,13 @@ import styles from '../styles/app.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { resetRegisterModal, toggleCheckbox, updateTextarea } from '../redux/registerReducer';
 import InputField from './InputField';
-import { selectUnSelectApplication } from '../redux/clientsDataReducer';
+import { selectUnSelectApplication } from '../redux/applicationsDataReducer';
 
 const RegisterReason = ({ displayPopup, closePopup, onClose, onApproval, openReason }) => {
   const dispatch = useDispatch();
   const checkboxes = useSelector((state) => state.register.checkboxes);
   const textarea = useSelector((state) => state.register.textarea);
-  const clientsData = useSelector((state) => state.clientsData.data);
+  const applicationsData = useSelector((state) => state.applicationsData.data);
   const [memberName, setMemberName] = useState("");
   const [memberNumber, setMemberNumber] = useState("");
   const [checkBoxList, setCheckBoxList] = useState(<></>);
@@ -21,8 +21,8 @@ const RegisterReason = ({ displayPopup, closePopup, onClose, onApproval, openRea
   }, [checkboxes]);
 
   useEffect(() => {
-    if (clientsData) {
-      const modalData = clientsData.filter((data) => data.serial === openReason)[0] || null;
+    if (applicationsData) {
+      const modalData = applicationsData.filter((data) => data.serial === openReason)[0] || null;
       if (modalData) {
         setCheckBoxList(getCheckBoxList(modalData));
         setMemberName(modalData.name || "");
@@ -31,7 +31,7 @@ const RegisterReason = ({ displayPopup, closePopup, onClose, onApproval, openRea
     } else {
       setCheckBoxList(getCheckBoxList());
     }
-  }, [clientsData]);
+  }, [applicationsData]);
 
   const handleCheckboxChange = (label) => {
     dispatch(toggleCheckbox(label));

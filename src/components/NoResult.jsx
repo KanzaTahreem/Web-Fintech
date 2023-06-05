@@ -57,7 +57,7 @@ const NoResult = () => {
           </div>
         </div>
       </div>
-      <div className={styles.clients_table}>
+      <div className={styles.applications_table}>
         <table>
           <TableHead />
           <tbody>
