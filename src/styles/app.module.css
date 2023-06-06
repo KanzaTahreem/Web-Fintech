@@ -415,7 +415,7 @@ td {
   display: grid;
   place-items: center;
 }
-.numbers p:first-child {
+.activePage {
   background: #2A3958;
   color: #F5F5F5;
   border-radius: 4px;

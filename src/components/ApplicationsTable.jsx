@@ -35,16 +35,19 @@ const ApplicationsTable = () => {
     setPaginatedData(filteredApplicationsData.slice(startIndex, startIndex + itemsPerPage));
   }, [filteredApplicationsData, itemsPerPage, currentPage]);
 
-  const changePage = (moveForward) => {
+  const totalPages = Math.ceil(filteredApplicationsData.length / itemsPerPage);
+  const changePage = (moveForward, isFirstPage, isLastPage) => {
     console.log('Forward:', moveForward);
-    const totalPages = Math.ceil(filteredApplicationsData.length / itemsPerPage);
     console.log(totalPages);
     let nextPage;
-    if (moveForward) {
+    if (isFirstPage) {
+      nextPage = 1;
+    } else if (isLastPage) {
+      nextPage = totalPages;
+    } else if (moveForward) {
       nextPage = currentPage + 1;
-      console.log(nextPage)
       nextPage = Math.min(nextPage, totalPages); // Ensure next page doesn't exceed total pages
-    } else  {
+    } else {
       nextPage = currentPage - 1;
       nextPage = Math.max(nextPage, 1); // Ensure next page doesn't go below 1
     }
@@ -75,15 +78,22 @@ const ApplicationsTable = () => {
       <div className={styles.pagination_frame}>
         <div className={styles.pagination}>
           <div className={styles.arrows}>
-            <img src={leftDoubleArrow} alt="left_arrow" />
+            <img src={leftDoubleArrow} alt="left_double_arrow" onClick={() => changePage(false, true, false)} />
             <img src={leftArrow} alt="left_arrow"  onClick={() => changePage(false)} />
           </div>
           <div className={styles.numbers}>
-            {Array.from({ length: Math.ceil(filteredApplicationsData.length / itemsPerPage) }, (_, index) => index + 1).map((i) => <p onClick={() => goto(i)}>{i}</p>)}
+            {Array.from({ length: totalPages }, (_, index) => index + 1).map((pageNumber) => (
+              <p
+                className={currentPage === pageNumber ? styles.activePage : styles.pageNumber}
+                onClick={() => goto(pageNumber)}
+              >
+                {pageNumber}
+              </p>
+            ))}
           </div>
           <div className={styles.arrows}>
-            <img src={rightArrow} alt="right_arrow" onClick={() => changePage(true)} />
-            <img src={rightDoubleArrow} alt="right_arrow" />
+            <img src={rightArrow} alt="right_double_arrow" onClick={() => changePage(true)} />
+            <img src={rightDoubleArrow} alt="right_arrow" onClick={() => changePage(true, false, true)} />
           </div>
         </div>
       </div>
