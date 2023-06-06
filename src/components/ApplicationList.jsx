@@ -115,7 +115,7 @@ const ApplicationList = ({displayPopup, closePopup}) => {
 
   const getPendingApprovalsCount = () => {
     if (applicationsData) {
-      return applicationsData.filter((client) => client.approvalStatus === '승인대기').length;
+      return <span>{`${ applicationsData.filter((client) => client.approvalStatus === '승인대기').length }`}</span>
     }
     return 0;
   };
@@ -124,7 +124,7 @@ const ApplicationList = ({displayPopup, closePopup}) => {
     <section className={styles.application_list}>
       {modal}
       <div className={styles.upper_row}>
-        <h1 className={styles.headline}>회원상세</h1>
+        <h1 className={styles.headline}>회원상세 <span className={styles.req} /><span>필수항목</span></h1>
         <div className={styles.tabs}>
           {tabItems.map((tab, index) => (
             <p className={styles.tab} key={index}>

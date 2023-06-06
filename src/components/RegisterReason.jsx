@@ -15,6 +15,8 @@ const RegisterReason = ({ displayPopup, closePopup, onClose, onApproval, openRea
   const [memberName, setMemberName] = useState("");
   const [memberNumber, setMemberNumber] = useState("");
   const [checkBoxList, setCheckBoxList] = useState(<></>);
+  const [lastSavedDate, setLastSavedDate] = useState("");
+  const [manager, setManager] = useState("");
 
   useEffect(() => {
     setCheckBoxList(getCheckBoxList());
@@ -27,6 +29,8 @@ const RegisterReason = ({ displayPopup, closePopup, onClose, onApproval, openRea
         setCheckBoxList(getCheckBoxList(modalData));
         setMemberName(modalData.name || "");
         setMemberNumber(modalData.number || "");
+        setLastSavedDate(modalData.applicationDate || "");
+        setManager(modalData.admin || "");
       }
     } else {
       setCheckBoxList(getCheckBoxList());
@@ -93,7 +97,6 @@ const RegisterReason = ({ displayPopup, closePopup, onClose, onApproval, openRea
         />)
       }
     } else {
-      console.log("HEREEE")
       checkboxList = Object.entries(checkboxes).map(([label, checked]) => (
         <Checkbox
           key={label}
@@ -104,16 +107,12 @@ const RegisterReason = ({ displayPopup, closePopup, onClose, onApproval, openRea
         />
       ))
     }
+    if (!found) {
+      dispatch(updateTextarea(modalData?.reason || ''));
+    }
     return (
       <>
         {checkboxList}
-        <textarea
-          onChange={handleTextareaChange}
-          className={`${styles.add_reason} ${checkboxes['직접 입력'] ? styles.textarea_enabled : ''}`}
-          placeholder="사유 입력"
-          disabled={!checkboxes['직접 입력']}
-          value={found ? "" : modalData?.reason || ""}
-        ></textarea>
       </>
     );
   }
@@ -121,17 +120,24 @@ const RegisterReason = ({ displayPopup, closePopup, onClose, onApproval, openRea
   return (
     <section className={styles.modal}>
       <div>
-        <h1 className={styles.title}>투자유형 변경</h1>
+        <h1 className={styles.title}>{openReason > 0 ? '승인거부 사유 확인' : '승인거부 사유 입력'}</h1>
         <HiXMark className={styles.xmark}  onClick={cancelPopup} />
       </div>
       <div className={styles.model_content}>
         <form>
-          <InputField text={"회원번호"} placeholder={"abc111, abc222"} value={memberName} onChange={(e) => setMemberName(e.target.value)} enabled={openReason} />
-          <InputField text={"회원명/법인명"} placeholder={"김길동, ㈜가나다라투자"} value={memberNumber} onChange={(e) => setMemberNumber(e.target.value)} enabled={openReason} />
+          <InputField text={"회원번호"} placeholder={"abc111, abc222"} value={memberNumber} onChange={(e) => setMemberName(e.target.value)} enabled={openReason} />
+          <InputField text={"회원명/법인명"} placeholder={"김길동, ㈜가나다라투자"} value={memberName} onChange={(e) => setMemberNumber(e.target.value)} enabled={openReason} />
           <div>
-            <label htmlFor="text">승인거부 사유</label>
+            <label htmlFor="text">승인거부 사유<span className={styles.req} /> </label>
             <div className={styles.checkbox_wrapper}>
               {checkBoxList}
+              <textarea
+                onChange={handleTextareaChange}
+                className={`${styles.add_reason} ${checkboxes['직접 입력'] ? styles.textarea_enabled : ''}`}
+                placeholder="사유 입력"
+                disabled={!checkboxes['직접 입력']}
+                value={textarea}
+              ></textarea>
             </div>
           </div>
         </form>
@@ -139,20 +145,24 @@ const RegisterReason = ({ displayPopup, closePopup, onClose, onApproval, openRea
           <div className={styles.row_div}>
             <div>
               <label htmlFor="text">최근저장일시</label>
-              <input type="text" name="text" placeholder="2022-01-01 09:00:00" />
+              <input type="text" name="text" placeholder="2022-01-01 09:00:00" disabled value={lastSavedDate}/>
             </div>
             <div>
               <label htmlFor="text">관리자</label>
-              <input type="text" name="text" placeholder="김관리자" />
+              <input type="text" name="text" placeholder="김관리자" disabled value={manager} />
             </div>
           </div>
         </form>}
       </div>
       <div className={styles.model_btns}>
-        <button className={styles.save_btn} onClick={handleSave}>
+        {openReason > 0 ? <button className={styles.save_btn} onClick={cancelPopup}>
           저장
-        </button>
-        <button className={styles.cancel_btn} onClick={cancelPopup}>취소</button>
+        </button> : <>
+          <button className={styles.save_btn} onClick={handleSave}>
+            저장
+          </button>
+          <button className={styles.cancel_btn} onClick={cancelPopup}>취소</button>
+        </>}
       </div>
     </section>
   );

@@ -170,7 +170,7 @@ const applicationsDataReducer = (state = initialState, action) => {
         return {
           ...state,
           data: state.data.map((item) => {
-            if (item.number === action.payload.number) {
+            if (item.number === action.payload.number && item.approvalStatus === '승인대기') {
               return {
                 ...item,
                 applicationType: action.payload.applicationType,
@@ -181,7 +181,7 @@ const applicationsDataReducer = (state = initialState, action) => {
             return item;
           }),
           filteredData: state.filteredData.map((item) => {
-            if (item.number === action.payload.number) {
+            if (item.number === action.payload.number && item.approvalStatus === '승인대기') {
               return {
                 ...item,
                 applicationType: action.payload.applicationType,

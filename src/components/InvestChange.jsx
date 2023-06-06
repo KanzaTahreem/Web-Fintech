@@ -150,7 +150,7 @@ const InvestChange = ({displayPopup, closePopup, onClose}) => {
             <input type="text" name="memberName" placeholder="김길동" value={memberName} onChange={onInputChange} />
           </div>
           <div>
-            <label htmlFor="text">예치금잔액</label>
+            <label htmlFor="text">투자유형 <span className={styles.req} /></label>
             <Dropdown
               className={`${styles.box} ${styles.required} ${investmentType.isOpen ? styles['is-open'] : ''}`}
               buttonText="일반개인"
@@ -161,7 +161,7 @@ const InvestChange = ({displayPopup, closePopup, onClose}) => {
             />
           </div>
           <div>
-            <label htmlFor="text">투자건수</label>
+            <label htmlFor="text">서류첨부 <span className={styles.req} /> </label>
             <div className={styles.file_input_area}>
               <label htmlFor='fileUpload' className={styles.file_label}>
                 <p className={`${styles.upload_files} ${!fileLimit ? '' : 'disabled' } `}>파일 선택</p>

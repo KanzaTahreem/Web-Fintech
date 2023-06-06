@@ -1,16 +1,34 @@
 const MembersData = [
   {
-    number: '12',
-    name: 'Acd',
-    investmentType: '법인',
-    doc: ["https://cdn.pixabay.com/photo/2023/05/15/08/52/flower-7994491_1280.jpg", "https://au.edu.pk/Pages/Faculties/Engineering/Departments/Electrical/Elec_Doc/Programs_Details_BCE.pdf"],
+    number: 'abc1',
+    name: 'user',
+    investmentType: '소득적격',
+    doc: [],
   },
   {
-    number: '13',
-    name: 'Abc',
+    number: 'abc2',
+    name: 'user',
     investmentType: '소득적격',
-    doc: ["https://cdn.pixabay.com/photo/2023/05/15/08/52/flower-7994491_1280.jpg", "https://au.edu.pk/Pages/Faculties/Engineering/Departments/Electrical/Elec_Doc/Programs_Details_BCE.pdf"],
-  }
+    doc: [],
+  },
+  {
+    number: 'abc3',
+    name: 'user',
+    investmentType: '소득적격',
+    doc: [],
+  },
+  {
+    number: 'abc4',
+    name: 'user',
+    investmentType: '소득적격',
+    doc: [],
+  },
+  {
+    number: 'abc5',
+    name: 'user',
+    investmentType: '소득적격',
+    doc: [],
+  },
 ];
 
 export default MembersData;

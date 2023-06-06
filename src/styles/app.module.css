@@ -29,12 +29,32 @@
 }
 
 .headline {
+  display: flex;
   color: #0B101A;
   font-weight: 700;
   font-size: 1.5rem;
   line-height: 1.725rem;
   padding-bottom: 17px;
   border-bottom: 1px solid #D7D8DA;
+}
+
+.headline span:first-child {
+  top: 0px;
+  left: 5px;
+}
+
+.headline span:nth-child(2){
+  color: #ff4d4f;
+  font-size: 14px;
+  font-weight: 500;
+  position: relative;
+  left: 8px;
+  top: -2px;
+}
+
+.headline > span > span {
+  color: #FF4D4F;
+  text-decoration: underline;
 }
 
 .tabs {
@@ -273,6 +293,9 @@ th:last-child {
   white-space: initial;
 }
 
+.reason {
+  text-align: left;
+}
 
 td {
   font-size: 0.78rem;
@@ -300,6 +323,10 @@ td {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.docs:hover {
+  cursor: pointer;
 }
 
 .approval span {
@@ -484,6 +511,7 @@ form input[type="file"] {
 .files_list {
   gap: 0.6rem;
 }
+
 .files_list {
   flex-wrap: wrap;
 }
@@ -548,8 +576,7 @@ form input[type="file"] {
   background: #FFFFFF;
   box-shadow: 0px 20px 24px -4px rgba(16, 24, 40, 0.1), 0px 8px 8px -4px rgba(16, 24, 40, 0.04);
   border-radius: 12px;
-  /* min-height: 38.56rem; */
-  width: 50rem;
+  width: 49.9rem;
 }
 
 .modal > div:first-child {
@@ -644,9 +671,15 @@ input[type="checkbox"] {
   min-height: 1.25rem !important;
   width: 1.25rem;
   height: 1.25rem;
-  border: 1px solid #D7D8DA;
+  /* border: 1px solid #D7D8DA; */
   border-radius: 6px;
   padding: 0;
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1), 0px 0px 0px 1px rgba(70, 79, 96, 0.16), 0px 2px 5px rgba(89, 96, 120, 0.1);
+}
+
+.checkbox input {
+  /* border: none; */
+  background: white;
 }
 
 input.checked,
@@ -683,6 +716,15 @@ input[type="checkbox"]:disabled {
   color: #0B101A;
 }
 
+.checkbox .disabled {
+  background: #DDE0E6;
+  /* border: none */
+}
+
+.checkbox .disabled::before {
+  content: none;
+}
+
 .checkbox_wrapper {
   flex-direction: column;
   align-items: flex-start;
@@ -705,6 +747,7 @@ input[type="checkbox"]:disabled {
   outline: none;
   resize: none;
 }
+
 
 textarea {
   color: #5A616A;
@@ -745,7 +788,7 @@ textarea::placeholder {
 /* ---------- view documents ---------- */
 
 .view_docs {
-  height: 58.563rem;
+  height: 40rem;
 }
 
 .view_docs form {
@@ -754,7 +797,7 @@ textarea::placeholder {
 }
 
 .view_docs label {
-  height: 44.8rem; 
+  /* height: 44.8rem; */
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
 }
@@ -762,4 +805,62 @@ textarea::placeholder {
 .view_docs input {
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
+}
+
+.view_docs .file_input_area {
+  flex-direction: column;
+  overflow-y: scroll;
+}
+
+.view_docs .file_input_area li {
+  margin: 0.5rem;
+}
+
+.view_docs .file_input_area * {
+  max-width: 560px;
+  max-height: 645px;
+  border-radius: 10px;
+  display: flex;
+}
+
+.view_docs img {
+  display: flex;
+  margin: auto;
+}
+
+.view_docs .model_content {
+  height: 29.7rem;
+}
+
+.view_docs form,
+.view_docs form > div {
+  height: 100%;
+}
+
+.view_docs li {
+  border: 1px solid #B1B4BB;
+  border-radius: 10px;
+  width: 560px;
+  margin: 0.5rem;
+  list-style-type: none;
+}
+
+.download_btn {
+  background-color: #EBEEF3;
+  border: 1px solid #D7D8DA !important;
+  color: #0B101A;
+}
+
+.check_btn {
+  background: #2A3958;
+  color: white;
+}
+
+.req {
+  width: 4px;
+  height: 4px;
+  background: #ff4d4f;
+  border-radius: 50%;
+  position: relative;
+  top: -8px;
 }
