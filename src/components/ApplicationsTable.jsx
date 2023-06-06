@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import TableHead from './TableHead'
 import TableRow from './TableRow'
@@ -8,17 +8,19 @@ import leftArrow from '../assets/images/left_arrow.svg'
 import rightArrow from '../assets/images/right_arrow.svg'
 import styles from '../styles/app.module.css';
 import Container from './Container';
-import { selectUnSelectApplication } from '../redux/applicationsDataReducer';
+import { selectUnSelectApplication, updateCurrentPage } from '../redux/applicationsDataReducer';
 
 const ApplicationsTable = () => {
-  const applicationsData = useSelector((state) => state.applicationsData.filteredData);
+  const filteredApplicationsData = useSelector((state) => state.applicationsData.filteredData);
+  const currentPage =  useSelector((state) => state.applicationsData.currentPage);
+  const itemsPerPage =  useSelector((state) => state.applicationsData.limit);
+  const [paginatedData, setPaginatedData] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   const dispatch = useDispatch();
 
-
   const handleCheckAll = () => {
     setSelectAll(!selectAll);
-    applicationsData.forEach((item) => {
+    paginatedData.forEach((item) => {
       if (item.approvalStatus !== '승인거부' && item.approvalStatus !== '승인완료') {
         dispatch(selectUnSelectApplication({
           checked: !selectAll,
@@ -27,13 +29,38 @@ const ApplicationsTable = () => {
       }
     });
   };
+
+  useEffect(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    setPaginatedData(filteredApplicationsData.slice(startIndex, startIndex + itemsPerPage));
+  }, [filteredApplicationsData, itemsPerPage, currentPage]);
+
+  const changePage = (moveForward) => {
+    console.log('Forward:', moveForward);
+    const totalPages = Math.ceil(filteredApplicationsData.length / itemsPerPage);
+    console.log(totalPages);
+    let nextPage;
+    if (moveForward) {
+      nextPage = currentPage + 1;
+      console.log(nextPage)
+      nextPage = Math.min(nextPage, totalPages); // Ensure next page doesn't exceed total pages
+    } else  {
+      nextPage = currentPage - 1;
+      nextPage = Math.max(nextPage, 1); // Ensure next page doesn't go below 1
+    }
+    console.log(nextPage);
+    dispatch(updateCurrentPage(nextPage));
+  };
+
+  const goto = (i) =>  dispatch(updateCurrentPage(i));
+
   return (
     <>
       <div className={styles.applications_table}>
         <table>
           <TableHead handleCheckAll={handleCheckAll} />
           <tbody>
-          {applicationsData && applicationsData.length ? applicationsData.map((item) => (
+          {paginatedData && paginatedData.length ? paginatedData.map((item) => (
               <Container>
                 <TableRow
                   key={item.serial}
@@ -49,22 +76,13 @@ const ApplicationsTable = () => {
         <div className={styles.pagination}>
           <div className={styles.arrows}>
             <img src={leftDoubleArrow} alt="left_arrow" />
-            <img src={leftArrow} alt="left_arrow" />
+            <img src={leftArrow} alt="left_arrow"  onClick={() => changePage(false)} />
           </div>
           <div className={styles.numbers}>
-            <p>1</p>
-            <p>2</p>
-            <p>3</p>
-            <p>4</p>
-            <p>5</p>
-            <p>6</p>
-            <p>7</p>
-            <p>8</p>
-            <p>9</p>
-            <p>10</p>
+            {Array.from({ length: Math.ceil(filteredApplicationsData.length / itemsPerPage) }, (_, index) => index + 1).map((i) => <p onClick={() => goto(i)}>{i}</p>)}
           </div>
           <div className={styles.arrows}>
-            <img src={rightArrow} alt="right_arrow" />
+            <img src={rightArrow} alt="right_arrow" onClick={() => changePage(true)} />
             <img src={rightDoubleArrow} alt="right_arrow" />
           </div>
         </div>

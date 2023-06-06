@@ -7,6 +7,7 @@ const ADD_APPLICATION_DATA = 'applications/ADD_APPLICATION_DATA';
 const UPDATE_FILTER = 'applications/UPDATE_FILTER';
 const UPDATE_SORT_ORDER = 'applications/UPDATE_SORT_ORDER';
 const UPDATE_LIMIT = 'applications/UPDATE_LIMIT';
+const UPDATE_CURRENT_PAGE = 'applications/UPDATE_CURRENT_PAGE';
 
 export const setApplicationsData = (applicationsData) => {
   return {
@@ -51,6 +52,11 @@ export const updateLimit = (limit) => {
   }
 }
 
+export const updateCurrentPage = (page) => ({
+  type: UPDATE_CURRENT_PAGE,
+  payload: page
+});
+
 const initialLimit = 50;
 
 const initialState = {
@@ -63,11 +69,12 @@ const initialState = {
   }).slice(0, initialLimit),
   filter: '승인여부 전체',
   sortOrder: '신청일시순',
-  limit: initialLimit
+  limit: initialLimit,
+  currentPage: 1
 };
 
 const applicationsDataReducer = (state = initialState, action) => {
-  function getFilteredData(filter, sortOrder, limit) {
+  function getFilteredData(filter, sortOrder, limit, currentPage) {
     // Return data filtered by filter state and sorted by sortOrder state and limited by limit state
     const filteredData = state.data.filter((item) => {
       if (filter === '승인여부 전체') return true;
@@ -91,7 +98,7 @@ const applicationsDataReducer = (state = initialState, action) => {
       }
       return 0;
     }
-    ).slice(0, limit);
+    );
     return filteredData;
   }
   switch (action.type) {
@@ -99,7 +106,7 @@ const applicationsDataReducer = (state = initialState, action) => {
       return {
         ...state,
         data: action.payload,
-        filteredData: getFilteredData(state.filter, state.sortOrder, state.limit)
+        filteredData: getFilteredData(state.filter, state.sortOrder, state.limit, state.currentPage)
       };
     case SELECT_UNSELECT_APPLICATION:
       const updatedData = state.data.map((item) => {
@@ -230,20 +237,26 @@ const applicationsDataReducer = (state = initialState, action) => {
     case UPDATE_FILTER:
       return {
         ...state,
-        filteredData: getFilteredData(action.payload, state.sortOrder, state.limit),
+        filteredData: getFilteredData(action.payload, state.sortOrder, state.limit, state.currentPage),
         filter: action.payload
       }
     case UPDATE_SORT_ORDER:
       return {
         ...state,
-        filteredData: getFilteredData(state.filter, action.payload, state.limit),
+        filteredData: getFilteredData(state.filter, action.payload, state.limit, state.currentPage),
         sortOrder: action.payload
       }
     case UPDATE_LIMIT:
       return {
         ...state,
-        filteredData: getFilteredData(state.filter, state.sortOrder, action.payload),
+        filteredData: getFilteredData(state.filter, state.sortOrder, action.payload, state.currentPage),
         limit: action.payload
+      }
+    case UPDATE_CURRENT_PAGE:
+      return {
+        ...state,
+        filteredData: getFilteredData(state.filter, state.sortOrder, state.limit, action.payload),
+        currentPage: action.payload
       }
     default:
       return state;
