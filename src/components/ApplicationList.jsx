@@ -1,28 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import ApplicationsTable from './ApplicationsTable';
-import Dropdown from './Dropdown';
-import styles from '../styles/app.module.css';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  updateApprovalStatus,
+  updateFilter,
+  updateLimit,
+  updateSortOrder
+} from '../redux/applicationsDataReducer';
 import { Modal } from './Modal';
-import InvestChange from './InvestChange';
+import Dropdown from './Dropdown';
 import Container from './Container';
-import { useSelector } from 'react-redux';
-import { updateApprovalStatus, updateFilter, updateLimit, updateSortOrder } from '../redux/applicationsDataReducer';
+import InvestChange from './InvestChange';
 import RegisterReason from './RegisterReason';
+import ApplicationsTable from './ApplicationsTable';
+import { APPROVED, DENIED, PENDING, TABS, FILTER_OPTIONS } from '../utils/constants';
+import styles from '../styles/app.module.css';
 
 const ApplicationList = ({displayPopup, closePopup}) => {
-  const tabItems = ['기본정보 관리', '투자유형 관리', '입출금내역 조회', '영업내역 조회', '투자내역 조회', '채권내역 조회', 'SMS 관리', '상담내역 관리', '1:1문의내역 조회' ];
-  const menus = [
-    { buttonText: '승인여부 전체', menuItems: ['승인여부 전체', '승인대기', '승인완료', '승인거부'], selectedItem: null },
-    { buttonText: '신청일시순', menuItems: ['신청일시순', '승인일시순'], selectedItem: null },
-    { buttonText: '50개씩 보기', menuItems: ['25개씩 보기', '100개씩 보기'], selectedItem: null },
-  ];
-  const approvalStatus = ['승인완료', '승인거부'];
+  const approvalStatus = [APPROVED, DENIED];
 
   const [modal, setModal] = useState(<></>);
-  const [approvalStatusSelectedItem, setApprovalStatusSelectedItem] = useState(null);
-  const [prevApprovalStatusSelectedItem, setPrevApprovalStatusSelectedItem] = useState(null);
-  const [menuItemsSelectedItems, setMenuItemsSelectedItems] = useState(menus.map(() => null));
+  const [selectedStatus, setSelectedStatus] = useState(null);
+  const [prevSelectedStatus, setPrevSelectedStatus] = useState(null);
+  const [filteredDropdown, setFilteredDropdown] = useState(FILTER_OPTIONS.map(() => null));
   const applicationsData = useSelector((state) => state.applicationsData.filteredData);
   const dispatch = useDispatch();
 
@@ -36,8 +35,8 @@ const ApplicationList = ({displayPopup, closePopup}) => {
   }
 
   const closeRegisterReason = () => {
-    setApprovalStatusSelectedItem("승인상태 변경");
-    setPrevApprovalStatusSelectedItem(null);
+    setSelectedStatus("승인상태 변경");
+    setPrevSelectedStatus(null);
     setModal(<></>);
   };
 
@@ -47,7 +46,7 @@ const ApplicationList = ({displayPopup, closePopup}) => {
 
   const updateAllSelected = (reasonOfDenial, memberNumber, memberName) => {
     getApplicationsDataChecked().forEach((application) => {
-      dispatchApprovalStatusUpdate(application.serial, approvalStatusSelectedItem, reasonOfDenial, memberNumber, memberName);
+      dispatchApprovalStatusUpdate(application.serial, selectedStatus, reasonOfDenial, memberNumber, memberName);
     });
   }
 
@@ -72,14 +71,14 @@ const ApplicationList = ({displayPopup, closePopup}) => {
 
   const updateSelectedItemAndClose = (changeItem) => {
     if(changeItem) {
-      if (approvalStatusSelectedItem === approvalStatus[1]) {
+      if (selectedStatus === approvalStatus[1]) {
         openModal("RegisterReason")
       } else {
         updateAllSelected();
       }
-      setPrevApprovalStatusSelectedItem(approvalStatusSelectedItem);
+      setPrevSelectedStatus(selectedStatus);
     } else {
-      setApprovalStatusSelectedItem(prevApprovalStatusSelectedItem)
+      setSelectedStatus(prevSelectedStatus)
     }
     closePopup();
   }
@@ -96,9 +95,9 @@ const ApplicationList = ({displayPopup, closePopup}) => {
   };
 
   useEffect(() => {
-    if (approvalStatusSelectedItem) {
-      if (prevApprovalStatusSelectedItem) {
-        if (approvalStatusSelectedItem !== prevApprovalStatusSelectedItem) {
+    if (selectedStatus) {
+      if (prevSelectedStatus) {
+        if (selectedStatus !== prevSelectedStatus) {
           displayPopup(
             'Do you want to change the approval status of selected 2 cases?',
             () => updateSelectedItemAndClose(true),
@@ -106,16 +105,16 @@ const ApplicationList = ({displayPopup, closePopup}) => {
           )
         }
       } else {
-        setPrevApprovalStatusSelectedItem(approvalStatusSelectedItem);
+        setPrevSelectedStatus(selectedStatus);
       }
     }
-  }, [approvalStatusSelectedItem])
+  }, [selectedStatus])
 
   const getApplicationsDataChecked = () => applicationsData ? applicationsData.filter((client) => client.checked) : [];
 
-  const getPendingApprovalsCount = () => {
+  const getPendingStatusCount = () => {
     if (applicationsData) {
-      return <span>{`${ applicationsData.filter((client) => client.approvalStatus === '승인대기').length }`}</span>
+      return <span>{`${ applicationsData.filter((client) => client.approvalStatus === PENDING).length }`}</span>
     }
     return 0;
   };
@@ -126,7 +125,7 @@ const ApplicationList = ({displayPopup, closePopup}) => {
       <div className={styles.upper_row}>
         <h1 className={styles.headline}>회원상세 <span className={styles.req} /><span>필수항목</span></h1>
         <div className={styles.tabs}>
-          {tabItems.map((tab, index) => (
+          {TABS.map((tab, index) => (
             <p className={styles.tab} key={index}>
               {tab}
             </p>
@@ -137,25 +136,25 @@ const ApplicationList = ({displayPopup, closePopup}) => {
         <div className={styles.upper_middle_row}>
           <h2 className={styles.headline}>
             신청 목록
-            <span>(총 {applicationsData ? applicationsData.length : 0}명 | 승인대기 {getPendingApprovalsCount()}건)</span>
+            <span>(총 {applicationsData ? applicationsData.length : 0}명 | 승인대기 {getPendingStatusCount()}건)</span>
           </h2>
           <div className={styles.all_dropdowns}>
-            {menus.map((menu, index) => (
+            {FILTER_OPTIONS.map((dropdown, index) => (
               <Dropdown
                 key={index}
-                className={`${styles.box} ${menu.isOpen ? styles['is-open'] : ''}`}
-                buttonText={menu.buttonText}
-                menuItems={menu.menuItems}
-                selectedItem={menuItemsSelectedItems[index]}
+                className={`${styles.box} ${dropdown.isOpen ? styles['is-open'] : ''}`}
+                buttonText={dropdown.buttonText}
+                filterItems={dropdown.filterItems}
+                selectedItem={filteredDropdown[index]}
                 setSelectedItem={(item) => {
-                  const updatedSelectedItems = [...menuItemsSelectedItems];
+                  const updatedSelectedItems = [...filteredDropdown];
                   updatedSelectedItems[index] = item;
-                  setMenuItemsSelectedItems(updatedSelectedItems);
-                  if (menu.buttonText === '승인여부 전체') {
+                  setFilteredDropdown(updatedSelectedItems);
+                  if (dropdown.buttonText === '승인여부 전체') {
                     dispatch(updateFilter(item));
-                  } else if (menu.buttonText === '신청일시순') {
+                  } else if (dropdown.buttonText === '신청일시순') {
                     dispatch(updateSortOrder(item));
-                  } else if (menu.buttonText === '50개씩 보기') {
+                  } else if (dropdown.buttonText === '50개씩 보기') {
                     let limit = 50;
                     if (item === '100개씩 보기') {
                       limit = 100;
@@ -177,9 +176,9 @@ const ApplicationList = ({displayPopup, closePopup}) => {
             <p>선택한 {getApplicationsDataChecked().length}건</p>
             <Dropdown
               buttonText="승인상태 변경"
-              menuItems={approvalStatus}
-              selectedItem={prevApprovalStatusSelectedItem}
-              setSelectedItem={setApprovalStatusSelectedItem}
+              filterItems={approvalStatus}
+              selectedItem={prevSelectedStatus}
+              setSelectedItem={setSelectedStatus}
               enabled={getApplicationsDataChecked().length}
             />
             <button

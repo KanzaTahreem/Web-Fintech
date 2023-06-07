@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import Dropdown from './Dropdown';
 import { HiXMark } from 'react-icons/hi2';
-import styles from '../styles/app.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { addApplicationData } from '../redux/applicationsDataReducer';
 import { getFileExtension } from '../utils/getFileExtension';
+import { PENDING, MAX_SIZE, MAX_COUNT } from '../utils/constants';
+import Dropdown from './Dropdown';
+import InputField from './InputField'
+import styles from '../styles/app.module.css';
 
 const InvestChange = ({displayPopup, closePopup, onClose}) => {
   const investmentType = ['일반개인', '소득적격', '개인전문', '법인', '여신금융', 'P2P온투'];
@@ -18,17 +20,14 @@ const InvestChange = ({displayPopup, closePopup, onClose}) => {
   const dispatch = useDispatch();
   const members = useSelector((state) => state.membersData.data);
 
-  const MAX_SIZE = 100 * 1024 * 1024;
-  const MAX_COUNT = 10;
-
-  const handleUploadFiles = (files) => {
+  const UploadFiles = (files) => {
     const uploaded = [...uploadedFiles];
     let limitExceeded = false;
     let totalSize = uploaded.reduce((size, file) => size + file.size, 0);
+    const allowedExtensions = ['jpg', 'jpeg', 'gif', 'png', 'pdf'];
 
     files.some((file) => {
       const extension = file.name.split('.').pop().toLowerCase();
-      const allowedExtensions = ['jpg', 'jpeg', 'gif', 'png', 'pdf'];
 
       if (!allowedExtensions.includes(extension)) {
         displayPopup('jpg, jpeg, gif, png, pdf 파일만 등록 가능합니다.', closePopup, null);
@@ -56,10 +55,13 @@ const InvestChange = ({displayPopup, closePopup, onClose}) => {
     uploaded.forEach((file) => {
       const reader = new FileReader();
       reader.onload = (event) => {
-        setFilePaths([...filePaths, {
-          name: file.name,
-          path: event.target.result,
-        }]);
+        setFilePaths([
+          ...filePaths,
+          {
+            name: file.name,
+            path: event.target.result,
+          }
+        ]);
       };
       reader.readAsDataURL(file);
     });
@@ -71,7 +73,7 @@ const InvestChange = ({displayPopup, closePopup, onClose}) => {
 
   const handleFileEvent =  (e) => {
       const chosenFiles = Array.prototype.slice.call(e.target.files)
-      handleUploadFiles(chosenFiles);
+      UploadFiles(chosenFiles);
   }
 
   const handleSave = (e) => {
@@ -85,7 +87,7 @@ const InvestChange = ({displayPopup, closePopup, onClose}) => {
         applicationType: selectedItem,
         docs: uploadedFiles.map((file) => ({url: URL.createObjectURL(file), ext: getFileExtension(file.name)})),
         applicationDate: `${new Date().toISOString().split('T')[0]} ${new Date().toLocaleTimeString()}`,
-        approvalStatus: '승인대기',
+        approvalStatus: PENDING,
         reason: '',
         approvalDate: '',
         admin: '김관리자',
@@ -141,33 +143,41 @@ const InvestChange = ({displayPopup, closePopup, onClose}) => {
       </div>
       <div className={styles.model_content}>
         <form>
-          <div>
-            <label htmlFor="text">회원번호</label>
-            <input type="text" name="memberNumber" placeholder="abc111" value={memberNumber} onChange={onInputChange} />
-          </div>
-          <div>
-            <label htmlFor="text">회원명/법인명</label>
-            <input type="text" name="memberName" placeholder="김길동" value={memberName} onChange={onInputChange} />
-          </div>
+          <InputField
+            text='회원번호'
+            placeholder='abc111'
+            name='memberNumber'
+            value={memberNumber}
+            onChange={onInputChange}
+            enabled={0}
+          />
+          <InputField
+            text='회원명/법인명'
+            placeholder='김길동'
+            name='memberName'
+            value={memberName}
+            onChange={onInputChange}
+            enabled={0}
+          />
           <div>
             <label htmlFor="text">투자유형 <span className={styles.req} /></label>
             <Dropdown
               className={`${styles.box} ${styles.required} ${investmentType.isOpen ? styles['is-open'] : ''}`}
-              buttonText="일반개인"
-              menuItems={investmentType}
-              id="investment_type"
+              buttonText='일반개인'
+              filterItems={investmentType}
+              id='investment_type'
               selectedItem= {prevSelectedItem}
               setSelectedItem = {setSelectedItem}
             />
           </div>
           <div>
-            <label htmlFor="text">서류첨부 <span className={styles.req} /> </label>
+            <label htmlFor='text'>서류첨부 <span className={styles.req} /> </label>
             <div className={styles.file_input_area}>
               <label htmlFor='fileUpload' className={styles.file_label}>
                 <p className={`${styles.upload_files} ${!fileLimit ? '' : 'disabled' } `}>파일 선택</p>
               </label>
               <input
-                id="fileUpload"
+                id='fileUpload'
                 className={styles.required}
                 type='file'
                 multiple
