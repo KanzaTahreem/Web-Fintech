@@ -6,6 +6,14 @@ import { getFileExtension } from '../utils/getFileExtension';
 import { PENDING, MAX_SIZE, MAX_COUNT } from '../utils/constants';
 import Dropdown from './Dropdown';
 import InputField from './InputField'
+import {
+  SAVED,
+  ALLOWED_FILE_TYPES,
+  ALLOWED_FILE_NO,
+  ALLOWED_FILE_SIZE,
+  CONFIRM_CHANGE_TYPE,
+  ENTER_REQUIRED_FIELDS
+} from '../utils/messages';
 import styles from '../styles/app.module.css';
 
 const InvestChange = ({displayPopup, closePopup, onClose}) => {
@@ -30,7 +38,7 @@ const InvestChange = ({displayPopup, closePopup, onClose}) => {
       const extension = file.name.split('.').pop().toLowerCase();
 
       if (!allowedExtensions.includes(extension)) {
-        displayPopup('jpg, jpeg, gif, png, pdf 파일만 등록 가능합니다.', closePopup, null);
+        displayPopup(ALLOWED_FILE_TYPES, closePopup, null);
         return true;
       }
 
@@ -40,12 +48,12 @@ const InvestChange = ({displayPopup, closePopup, onClose}) => {
           totalSize += file.size;
           if (uploaded.length === MAX_COUNT) setFileLimit(true);
           if (uploaded.length > MAX_COUNT) {
-            displayPopup('최대 10개까지 등록 가능합니다.', closePopup, null);
+            displayPopup(ALLOWED_FILE_NO, closePopup, null);
             limitExceeded = true;
             return true;
           }
         } else {
-          displayPopup('최대 100MB까지 등록 가능합니다.', closePopup, null);
+          displayPopup(ALLOWED_FILE_SIZE, closePopup, null);
           return true;
         }
       }
@@ -79,10 +87,10 @@ const InvestChange = ({displayPopup, closePopup, onClose}) => {
   const handleSave = (e) => {
     e.preventDefault();
     if (!selectedItem || !uploadedFiles.length) {
-      displayPopup('필수입력항목을 입력해주세요.', closePopup, null);
+      displayPopup(ENTER_REQUIRED_FIELDS, closePopup, null);
       return;
     }
-    displayPopup("저장되었습니다.", () => {
+    displayPopup(SAVED, () => {
       dispatch(addApplicationData({
         applicationType: selectedItem,
         docs: uploadedFiles.map((file) => ({url: URL.createObjectURL(file), ext: getFileExtension(file.name)})),
@@ -115,7 +123,7 @@ const InvestChange = ({displayPopup, closePopup, onClose}) => {
       if (prevSelectedItem) {
         if (selectedItem !== prevSelectedItem) {
           displayPopup(
-            '투자유형을 변경하시겠습니까?',
+            CONFIRM_CHANGE_TYPE,
             () => updateSelectedItemAndClose(true),
             () => updateSelectedItemAndClose(false)
           )

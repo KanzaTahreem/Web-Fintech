@@ -9,6 +9,7 @@ import {
   updateTextarea
 } from '../redux/registerReducer';
 import { DIRECT_INPUT } from '../utils/constants'
+import { SAVED, ENTER_REQUIRED_FIELDS } from '../utils/messages';
 import styles from '../styles/app.module.css';
 
 const RegisterReason = ({ displayPopup, closePopup, onClose, onApproval, openReason }) => {
@@ -62,9 +63,9 @@ const RegisterReason = ({ displayPopup, closePopup, onClose, onApproval, openRea
     const isAnyCheckboxChecked = Object.values(checkboxes).includes(true);
 
     if ((!isAnyCheckboxChecked && textarea.trim() === '') || (checkboxes[DIRECT_INPUT] && textarea.trim() === '')) {
-      displayPopup('Either checkboxes or textarea must be filled', closePopup, null);
+      displayPopup(ENTER_REQUIRED_FIELDS, closePopup, null);
     } else {
-      displayPopup('Saved', closePopupEntirely, null);
+      displayPopup(SAVED, closePopupEntirely, null);
     }
   };
 

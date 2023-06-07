@@ -7,8 +7,9 @@ import RegisterReason from './RegisterReason';
 import ViewDocuments from './ViewDocuments';
 import CustomTooltip from './CustomTooltip';
 import { PENDING, DENIED, APPROVED } from '../utils/constants';
-import styles from '../styles/app.module.css';
 import { toggleApplicationCheck } from '../redux/applicationsDataReducer';
+import { ALREADY_APPROVED, ALREADY_DENIED } from '../utils/messages';
+import styles from '../styles/app.module.css';
 
 const TableRow = ({ item, displayPopup, closePopup, selectAll }) => {
   const { serial, previousType, applicationType, docs, applicationDate, approvalStatus, reason, approvalDate, admin, checked } = item;
@@ -41,8 +42,8 @@ const TableRow = ({ item, displayPopup, closePopup, selectAll }) => {
     if (checkboxDisabled()) {
       const message =
         approvalStatus === APPROVED
-          ? 'You are already an approved member.'
-          : 'You have already been denied approval.';
+          ? ALREADY_APPROVED
+          : ALREADY_DENIED;
       displayPopup(message, closePopup, null);
     } else {
       dispatch(

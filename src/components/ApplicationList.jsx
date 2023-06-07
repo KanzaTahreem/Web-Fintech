@@ -12,7 +12,18 @@ import Container from './Container';
 import InvestChange from './InvestChange';
 import RegisterReason from './RegisterReason';
 import ApplicationsTable from './ApplicationsTable';
-import { APPROVED, DENIED, PENDING, TABS, FILTER_OPTIONS } from '../utils/constants';
+import {
+  APPROVED,
+  DENIED,
+  PENDING,
+  TABS,
+  FILTER_OPTIONS
+} from '../utils/constants';
+import {
+  SAVED,
+  NO_SELECTED_APPLICATION,
+  CHANGE_APPROVAL_STATUS
+} from '../utils/messages';
 import styles from '../styles/app.module.css';
 
 const ApplicationList = ({displayPopup, closePopup}) => {
@@ -28,10 +39,10 @@ const ApplicationList = ({displayPopup, closePopup}) => {
   const handleSave = (e) => {
     e.preventDefault();
     if (applicationsData && getApplicationsDataChecked().length) {
-      displayPopup('저장되었습니다.', closePopup, null);
+      displayPopup(SAVED, closePopup, null);
       return;
     }
-    displayPopup('선택된 신청건이 없습니다.', closePopup, null);
+    displayPopup(NO_SELECTED_APPLICATION, closePopup, null);
   }
 
   const closeRegisterReason = () => {
@@ -99,7 +110,7 @@ const ApplicationList = ({displayPopup, closePopup}) => {
       if (prevSelectedStatus) {
         if (selectedStatus !== prevSelectedStatus) {
           displayPopup(
-            'Do you want to change the approval status of selected 2 cases?',
+            CHANGE_APPROVAL_STATUS,
             () => updateSelectedItemAndClose(true),
             () => updateSelectedItemAndClose(false)
           )
