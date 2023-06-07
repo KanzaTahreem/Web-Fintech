@@ -11,7 +11,7 @@ const Checkbox = ({ label, checked, onChange, getClassName, disabled }) => {
     <div>
       <label className={styles.label}>
         <input
-          type="checkbox"
+          type='checkbox'
           disabled={disabled}
           checked={checked}
           className={getClassName ? getClassName() : `${checked ? styles.checked : ''} ${styles.checkbox}`}

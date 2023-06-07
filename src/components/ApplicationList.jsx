@@ -28,14 +28,14 @@ const ApplicationList = ({displayPopup, closePopup}) => {
   const handleSave = (e) => {
     e.preventDefault();
     if (applicationsData && getApplicationsDataChecked().length) {
-      displayPopup("저장되었습니다.", closePopup, null);
+      displayPopup('저장되었습니다.', closePopup, null);
       return;
     }
     displayPopup('선택된 신청건이 없습니다.', closePopup, null);
   }
 
   const closeRegisterReason = () => {
-    setSelectedStatus("승인상태 변경");
+    setSelectedStatus('승인상태 변경');
     setPrevSelectedStatus(null);
     setModal(<></>);
   };
@@ -51,14 +51,14 @@ const ApplicationList = ({displayPopup, closePopup}) => {
   }
 
   const openModal = (name) => {
-    if (name === "InvestChange") {
+    if (name === 'InvestChange') {
       setModal(
         <Modal>
           <Container>
             <InvestChange onClose={closeInvestChange} />
           </Container>
         </Modal>)
-    } else if (name === "RegisterReason") {
+    } else if (name === 'RegisterReason') {
       setModal(
         <Modal>
           <Container>
@@ -72,7 +72,7 @@ const ApplicationList = ({displayPopup, closePopup}) => {
   const updateSelectedItemAndClose = (changeItem) => {
     if(changeItem) {
       if (selectedStatus === approvalStatus[1]) {
-        openModal("RegisterReason")
+        openModal('RegisterReason')
       } else {
         updateAllSelected();
       }
@@ -175,7 +175,7 @@ const ApplicationList = ({displayPopup, closePopup}) => {
           <div>
             <p>선택한 {getApplicationsDataChecked().length}건</p>
             <Dropdown
-              buttonText="승인상태 변경"
+              buttonText='승인상태 변경'
               filterItems={approvalStatus}
               selectedItem={prevSelectedStatus}
               setSelectedItem={setSelectedStatus}

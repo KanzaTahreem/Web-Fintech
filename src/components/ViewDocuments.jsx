@@ -1,6 +1,5 @@
 import React from 'react';
 import { HiXMark } from 'react-icons/hi2';
-// import InputField from './InputField';
 import styles from '../styles/app.module.css';
 import { getFilePreview } from '../utils/getFilePreview';
 
@@ -14,7 +13,7 @@ const ViewDocuments = ({docs, onClose}) => {
       <div className={styles.model_content}>
       <form>
           <div>
-          <label htmlFor="text">서류 <span className={styles.req} /></label>
+          <label htmlFor='text'>서류 <span className={styles.req} /></label>
           <div className={styles.file_input_area}>
             {
               docs && docs.map((file, index) => {

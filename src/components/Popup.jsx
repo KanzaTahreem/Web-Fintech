@@ -9,8 +9,8 @@ const Popup = ({ message, onClose, onCancel, onCancelText }) => {
     <div className={styles.popup}>
       <div className={styles.popup_content}>
         <div className={styles.popup_header}>
-          {message === '저장되었습니다.' ? <img src={saved} alt="saved_icon" /> : <img src={error} alt="error_icon" />}
-          
+          {message === '저장되었습니다.' ? <img src={saved} alt='saved_icon' /> : <img src={error} alt='error_icon' />}
+
           <HiXMark onClick={onCancel ? onCancel : onClose}/>
         </div>
         <div className={styles.popup_footer}>

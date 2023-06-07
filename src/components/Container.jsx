@@ -5,7 +5,14 @@ const Container = ({children}) => {
   const [popupScreen, setPopupScreen] = useState(null);
 
   const displayPopup = (message, closeFunc, cancelFunc) => {
-    setPopupScreen(<Popup message={message} onClose={closeFunc} onCancel={cancelFunc} onCancelText={"취소"} />);
+    setPopupScreen(
+      <Popup
+        message={message}
+        onClose={closeFunc}
+        onCancel={cancelFunc}
+        onCancelText={'취소'}
+      />
+    );
   };
 
   const closePopup = () => {

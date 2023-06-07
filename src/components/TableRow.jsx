@@ -71,7 +71,7 @@ const TableRow = ({ item, displayPopup, closePopup, selectAll }) => {
 
   const ApprovalStatusComponent = () => (
     <p data-tooltip-id={`row-tooltip${serial}`}>
-      <CustomTooltip id={`row-tooltip${serial}`} text="Check details" onClick={openCheckReason}>
+      <CustomTooltip id={`row-tooltip${serial}`} text='Check details' onClick={openCheckReason}>
         <div>{approvalStatus}</div>
       </CustomTooltip>
     </p>

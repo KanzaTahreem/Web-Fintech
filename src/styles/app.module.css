@@ -1,4 +1,4 @@
-.children_div {
+.children {
   width: 100vw;
   height: 100vh;
   position: fixed;
@@ -9,7 +9,7 @@
   align-items: center;
 }
 
-.background_div {
+.background {
   width: 100vw;
   height: 100vh;
   position: fixed;
@@ -700,7 +700,7 @@ input[type="checkbox"]:checked:before,
 .chkChecked:checked:before {
   width: 4px;
   height: 9px;
-  margin: 2px 6px;
+  margin: 3px 8px;
   border-bottom: 2px solid white;
   border-right: 2px solid white;
   transform: rotate(45deg);

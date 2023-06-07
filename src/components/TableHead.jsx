@@ -8,7 +8,7 @@ const TableHead = ({ handleCheckAll }) => {
       <tr className={styles.labels}>
         <th className={styles.checkbox}>
           <Checkbox
-            type="checkbox"
+            type='checkbox'
             onChange={handleCheckAll}
           />
         </th>
