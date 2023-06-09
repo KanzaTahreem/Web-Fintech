@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import RegisterReason from './RegisterReason';
+import AddReason from './AddReason';
 import ViewDocuments from './ViewDocuments';
 import Modal from '../helpers/Modal';
 import Checkbox from '../helpers/Checkbox';
@@ -33,7 +33,7 @@ const TableRow = ({ item, displayPopup, closePopup, selectAll }) => {
   };
 
   const openCheckReason = () => {
-    openModal(<RegisterReason onClose={closeModal} openReason={serial} />)
+    openModal(<AddReason onClose={closeModal} openReason={serial} />)
   };
 
   const checkboxDisabled = () => approvalStatus === DENIED || approvalStatus === APPROVED;

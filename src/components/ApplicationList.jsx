@@ -9,8 +9,8 @@ import {
 import Modal from '../helpers/Modal';
 import Container from '../helpers/Container';
 import Dropdown from './Dropdown';
-import InvestChange from './InvestChange';
-import RegisterReason from './RegisterReason';
+import ChangeInvestment from './ChangeInvestment';
+import AddReason from './AddReason';
 import ApplicationsTable from './ApplicationsTable';
 import {
   APPROVED,
@@ -45,13 +45,13 @@ const ApplicationList = ({displayPopup, closePopup}) => {
     displayPopup(NO_SELECTED_APPLICATION, closePopup, null);
   }
 
-  const closeRegisterReason = () => {
+  const closeAddReason = () => {
     setSelectedStatus('승인상태 변경');
     setPrevSelectedStatus(null);
     setModal(<></>);
   };
 
-  const closeInvestChange = () => {
+  const closeChangeInvestment = () => {
     setModal(<></>);
   }
 
@@ -62,18 +62,18 @@ const ApplicationList = ({displayPopup, closePopup}) => {
   }
 
   const openModal = (name) => {
-    if (name === 'InvestChange') {
+    if (name === 'ChangeInvestment') {
       setModal(
         <Modal>
           <Container>
-            <InvestChange onClose={closeInvestChange} />
+            <ChangeInvestment onClose={closeChangeInvestment} />
           </Container>
         </Modal>)
-    } else if (name === 'RegisterReason') {
+    } else if (name === 'AddReason') {
       setModal(
         <Modal>
           <Container>
-            <RegisterReason onClose={closeRegisterReason} onApproval={updateAllSelected} openReason={-1} />
+            <AddReason onClose={closeAddReason} onApproval={updateAllSelected} openReason={-1} />
           </Container>
         </Modal>
       )
@@ -83,7 +83,7 @@ const ApplicationList = ({displayPopup, closePopup}) => {
   const updateSelectedItemAndClose = (changeItem) => {
     if(changeItem) {
       if (selectedStatus === approvalStatus[1]) {
-        openModal('RegisterReason')
+        openModal('AddReason')
       } else {
         updateAllSelected();
       }
@@ -180,7 +180,7 @@ const ApplicationList = ({displayPopup, closePopup}) => {
           </div>
         </div>
         <div className={styles.lower_middle_row}>
-          <button type="button" className={styles.btn} onClick={() => openModal('InvestChange')}>
+          <button type="button" className={styles.btn} onClick={() => openModal('ChangeInvestment')}>
             등록
           </button>
           <div>

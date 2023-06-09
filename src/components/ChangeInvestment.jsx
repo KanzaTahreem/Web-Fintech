@@ -21,7 +21,7 @@ import {
 } from '../utils/messages';
 import styles from '../styles/app.module.css';
 
-const InvestChange = ({displayPopup, closePopup, onClose}) => {
+const ChangeInvestment = ({displayPopup, closePopup, onClose}) => {
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [filePaths, setFilePaths] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -219,4 +219,4 @@ const InvestChange = ({displayPopup, closePopup, onClose}) => {
   );
 }
 
-export default InvestChange;
+export default ChangeInvestment;

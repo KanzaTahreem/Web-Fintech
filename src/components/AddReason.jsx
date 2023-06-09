@@ -12,7 +12,7 @@ import { DIRECT_INPUT } from '../utils/constants'
 import { SAVED, ENTER_REQUIRED_FIELDS } from '../utils/messages';
 import styles from '../styles/app.module.css';
 
-const RegisterReason = ({ displayPopup, closePopup, onClose, onApproval, openReason }) => {
+const AddReason = ({ displayPopup, closePopup, onClose, onApproval, openReason }) => {
   const dispatch = useDispatch();
   const checkboxes = useSelector((state) => state.addReason.checkboxes);
   const textarea = useSelector((state) => state.addReason.textarea);
@@ -188,4 +188,4 @@ const RegisterReason = ({ displayPopup, closePopup, onClose, onApproval, openRea
   );
 };
 
-export default RegisterReason;
+export default AddReason;
