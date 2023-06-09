@@ -7,7 +7,7 @@ import rightArrow from '../assets/images/right_arrow.svg'
 import {
   toggleApplicationCheck,
   updateCurrentPage
-} from '../redux/applicationsDataReducer';
+} from '../redux/applicationData/actions';
 import Container from '../helpers/Container';
 import TableHead from './TableHead'
 import TableRow from './TableRow'
@@ -75,7 +75,7 @@ const ApplicationsTable = () => {
     <>
       <div className={styles.applications_table}>
         <table>
-          <TableHead handleCheckAll={handleCheckAll} />
+          <TableHead handleCheckAll={handleCheckAll} checked={selectAll} />
           <tbody>
             {paginatedData && paginatedData.length ? (
                 paginatedData.map((item) => (

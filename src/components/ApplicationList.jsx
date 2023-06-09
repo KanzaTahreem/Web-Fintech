@@ -5,7 +5,7 @@ import {
   updateFilter,
   updateLimit,
   updateSortOrder
-} from '../redux/applicationsDataReducer';
+} from '../redux/applicationData/actions';
 import Modal from '../helpers/Modal';
 import Container from '../helpers/Container';
 import Dropdown from './Dropdown';

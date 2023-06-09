@@ -7,7 +7,7 @@ import Checkbox from '../helpers/Checkbox';
 import Container from '../helpers/Container';
 import CustomTooltip from '../helpers/CustomTooltip';
 import { PENDING, DENIED, APPROVED } from '../utils/constants';
-import { toggleApplicationCheck } from '../redux/applicationsDataReducer';
+import { toggleApplicationCheck } from '../redux/applicationData/actions';
 import { ALREADY_APPROVED, ALREADY_DENIED } from '../utils/messages';
 import styles from '../styles/app.module.css';
 

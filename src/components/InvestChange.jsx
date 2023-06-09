@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { HiXMark } from 'react-icons/hi2';
-import { addApplicationData } from '../redux/applicationsDataReducer';
+import { addApplicationData } from '../redux/applicationData/actions';
 import { getFileExtension } from '../utils/getFileExtension';
 import Dropdown from './Dropdown';
 import InputField from '../helpers/InputField'

@@ -1,62 +1,15 @@
-import ApplicationsData from '../data/ApplicationsData';
-import { PENDING, DENIED, APPROVED } from '../utils/constants';
-
-const SET_APPLICATIONS_DATA = 'applications/SET_APPLICATIONS_DATA';
-const TOGGLE_APPLICATION_CHECK = 'applications/TOGGLE_APPLICATION_CHECK';
-const UPDATE_APPROVAL_STATUS = 'applications/UPDATE_APPROVAL_STATUS';
-const ADD_APPLICATION_DATA = 'applications/ADD_APPLICATION_DATA';
-const UPDATE_FILTER = 'applications/UPDATE_FILTER';
-const UPDATE_SORT_ORDER = 'applications/UPDATE_SORT_ORDER';
-const UPDATE_LIMIT = 'applications/UPDATE_LIMIT';
-const UPDATE_CURRENT_PAGE = 'applications/UPDATE_CURRENT_PAGE';
-
-export const setApplicationsData = (applicationsData) => {
-  return {
-    type: SET_APPLICATIONS_DATA,
-    payload: applicationsData,
-  };
-};
-
-export const toggleApplicationCheck = (payload) => ({
-  type: TOGGLE_APPLICATION_CHECK,
-  payload
-})
-
-export const updateApprovalStatus = (payload) => ({
-  type: UPDATE_APPROVAL_STATUS,
-  payload
-});
-
-export const addApplicationData = (payload) => ({
-  type: ADD_APPLICATION_DATA,
-  payload
-});
-
-export const updateFilter = (filter) => {
-  return {
-    type: UPDATE_FILTER,
-    payload: filter
-  }
-}
-
-export const updateSortOrder = (sortOrder) => {
-  return {
-    type: UPDATE_SORT_ORDER,
-    payload: sortOrder
-  }
-}
-
-export const updateLimit = (limit) => {
-  return {
-    type: UPDATE_LIMIT,
-    payload: limit
-  }
-}
-
-export const updateCurrentPage = (page) => ({
-  type: UPDATE_CURRENT_PAGE,
-  payload: page
-});
+import ApplicationsData from '../../data/ApplicationsData';
+import { PENDING, DENIED, APPROVED } from '../../utils/constants';
+import {
+  SET_APPLICATIONS_DATA,
+  TOGGLE_APPLICATION_CHECK,
+  UPDATE_APPROVAL_STATUS,
+  ADD_APPLICATION_DATA,
+  UPDATE_FILTER,
+  UPDATE_SORT_ORDER,
+  UPDATE_LIMIT,
+  UPDATE_CURRENT_PAGE
+} from './actions';
 
 const initialLimit = 50;
 

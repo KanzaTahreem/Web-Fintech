@@ -1,13 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
-import registerReasonReducer from './registerReducer';
-import investmentReducer from './investmentReducer';
-import membersDataReducer from './membersDataReducer';
-import applicationsDataReducer from './applicationsDataReducer';
+import addReasonReducer from './addReason/reducer';
+import changeInvestmentReducer from './changeInvestment/reducer';
+import membersDataReducer from './membersData/reducer';
+import applicationsDataReducer from './applicationData/reducer';
 
 const store = configureStore({
   reducer: {
-    register: registerReasonReducer,
-    investment: investmentReducer,
+    addReason: addReasonReducer,
+    investment: changeInvestmentReducer,
     applicationsData: applicationsDataReducer,
     membersData: membersDataReducer
   },

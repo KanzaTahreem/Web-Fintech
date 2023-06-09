@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '../styles/app.module.css';
 
-const Checkbox = ({ label, checked, onChange, getClassName, disabled }) => {
+const Checkbox = ({ label, checked = false, onChange, getClassName, disabled }) => {
 
   const handleCheck = () => {
     onChange(label);

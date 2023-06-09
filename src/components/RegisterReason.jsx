@@ -4,18 +4,18 @@ import { HiXMark } from 'react-icons/hi2';
 import Checkbox from '../helpers/Checkbox';
 import InputField from '../helpers/InputField';
 import {
-  resetRegisterModal,
+  resetAddReasonModal,
   toggleCheckbox,
   updateTextarea
-} from '../redux/registerReducer';
+} from '../redux/addReason/actions';
 import { DIRECT_INPUT } from '../utils/constants'
 import { SAVED, ENTER_REQUIRED_FIELDS } from '../utils/messages';
 import styles from '../styles/app.module.css';
 
 const RegisterReason = ({ displayPopup, closePopup, onClose, onApproval, openReason }) => {
   const dispatch = useDispatch();
-  const checkboxes = useSelector((state) => state.register.checkboxes);
-  const textarea = useSelector((state) => state.register.textarea);
+  const checkboxes = useSelector((state) => state.addReason.checkboxes);
+  const textarea = useSelector((state) => state.addReason.textarea);
   const applicationsData = useSelector((state) => state.applicationsData.filteredData);
   const [memberName, setMemberName] = useState('');
   const [memberNumber, setMemberNumber] = useState('');
@@ -49,7 +49,7 @@ const RegisterReason = ({ displayPopup, closePopup, onClose, onApproval, openRea
   };
 
   const closePopupEntirely = () => {
-    dispatch(resetRegisterModal());
+    dispatch(resetAddReasonModal());
     const selectedReason = Object.keys(checkboxes).find((key) => checkboxes[key]);
     const reason = selectedReason === DIRECT_INPUT ? textarea : selectedReason;
     onApproval(reason, memberName, memberNumber);
@@ -70,7 +70,7 @@ const RegisterReason = ({ displayPopup, closePopup, onClose, onApproval, openRea
   };
 
   const cancelPopup = () => {
-    dispatch(resetRegisterModal())
+    dispatch(resetAddReasonModal())
     onClose();
   }
 

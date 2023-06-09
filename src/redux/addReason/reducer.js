@@ -1,21 +1,8 @@
-export const TOGGLE_CHECKBOX = 'registerReason/TOGGLE_CHECKBOX';
-export const UPDATE_TEXTAREA = 'registerReason/UPDATE_TEXTAREA';
-export const RESET_REGISTER_MODAL = 'registerReason/RESET_REGISTER_MODAL';
-
-export const toggleCheckbox = (label) => ({
-  type: TOGGLE_CHECKBOX,
-  payload: label,
-});
-
-export const resetRegisterModal = () => ({
-  type: RESET_REGISTER_MODAL
-});
-
-export const updateTextarea = (value) => ({
-  type: UPDATE_TEXTAREA,
-  payload: value,
-});
-
+import {
+  TOGGLE_CHECKBOX,
+  RESET_ADD_REASON_MODAL,
+  UPDATE_TEXTAREA
+} from './actions';
 
 const initialState = {
   checkboxes: {
@@ -29,7 +16,7 @@ const initialState = {
   textarea: '',
 };
 
-const registerReasonReducer = (state = initialState, action) => {
+const addReasonReducer = (state = initialState, action) => {
   switch (action.type) {
     case TOGGLE_CHECKBOX:
       const { payload: label } = action;
@@ -45,11 +32,11 @@ const registerReasonReducer = (state = initialState, action) => {
     case UPDATE_TEXTAREA:
       return { ...state, textarea: action.payload };
 
-    case RESET_REGISTER_MODAL:
+    case RESET_ADD_REASON_MODAL:
       return initialState;
     default:
       return state;
   }
 };
 
-export default registerReasonReducer;
+export default addReasonReducer;

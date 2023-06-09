@@ -2,7 +2,7 @@ import React from 'react';
 import Checkbox from '../helpers/Checkbox';
 import styles from '../styles/app.module.css';
 
-const TableHead = ({ handleCheckAll }) => {
+const TableHead = ({ handleCheckAll, checked }) => {
   return (
     <thead>
       <tr className={styles.labels}>
@@ -10,6 +10,7 @@ const TableHead = ({ handleCheckAll }) => {
           <Checkbox
             type='checkbox'
             onChange={handleCheckAll}
+            checked={checked}
           />
         </th>
         <th className={styles.serial}>NO</th>
