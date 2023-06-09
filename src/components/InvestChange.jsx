@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { HiXMark } from 'react-icons/hi2';
 import { useDispatch, useSelector } from 'react-redux';
+import { HiXMark } from 'react-icons/hi2';
 import { addApplicationData } from '../redux/applicationsDataReducer';
 import { getFileExtension } from '../utils/getFileExtension';
-import { PENDING, MAX_SIZE, MAX_COUNT } from '../utils/constants';
 import Dropdown from './Dropdown';
-import InputField from './InputField'
+import InputField from '../helpers/InputField'
+import {
+  PENDING,
+  MAX_SIZE,
+  MAX_COUNT,
+  INVESTMENT_TYPE
+} from '../utils/constants';
 import {
   SAVED,
   ALLOWED_FILE_TYPES,
@@ -17,7 +22,6 @@ import {
 import styles from '../styles/app.module.css';
 
 const InvestChange = ({displayPopup, closePopup, onClose}) => {
-  const investmentType = ['일반개인', '소득적격', '개인전문', '법인', '여신금융', 'P2P온투'];
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [filePaths, setFilePaths] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -170,9 +174,9 @@ const InvestChange = ({displayPopup, closePopup, onClose}) => {
           <div>
             <label htmlFor="text">투자유형 <span className={styles.req} /></label>
             <Dropdown
-              className={`${styles.box} ${styles.required} ${investmentType.isOpen ? styles['is-open'] : ''}`}
+              className={`${styles.box} ${styles.required} ${INVESTMENT_TYPE.isOpen ? styles['is-open'] : ''}`}
               buttonText='일반개인'
-              filterItems={investmentType}
+              filterItems={INVESTMENT_TYPE}
               id='investment_type'
               selectedItem= {prevSelectedItem}
               setSelectedItem = {setSelectedItem}

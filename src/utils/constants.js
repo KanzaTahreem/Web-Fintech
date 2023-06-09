@@ -21,3 +21,5 @@ export const FILTER_OPTIONS = [
   { buttonText: '신청일시순', filterItems: ['신청일시순', '승인일시순'], selectedItem: null },
   { buttonText: '50개씩 보기', filterItems: ['25개씩 보기', '100개씩 보기'], selectedItem: null },
 ];
+
+export const INVESTMENT_TYPE = ['일반개인', '소득적격', '개인전문', '법인', '여신금융', 'P2P온투'];

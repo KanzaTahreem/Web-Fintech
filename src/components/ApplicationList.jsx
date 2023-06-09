@@ -6,9 +6,9 @@ import {
   updateLimit,
   updateSortOrder
 } from '../redux/applicationsDataReducer';
-import { Modal } from './Modal';
+import Modal from '../helpers/Modal';
+import Container from '../helpers/Container';
 import Dropdown from './Dropdown';
-import Container from './Container';
 import InvestChange from './InvestChange';
 import RegisterReason from './RegisterReason';
 import ApplicationsTable from './ApplicationsTable';

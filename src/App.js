@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import ApplicationList from './components/ApplicationList';
-import Container from './components/Container';
+import Container from './helpers/Container';
 
 const App = () => {
   return (

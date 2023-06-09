@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { HiXMark } from 'react-icons/hi2';
-import Checkbox from './Checkbox';
-import InputField from './InputField';
+import Checkbox from '../helpers/Checkbox';
+import InputField from '../helpers/InputField';
 import {
   resetRegisterModal,
   toggleCheckbox,

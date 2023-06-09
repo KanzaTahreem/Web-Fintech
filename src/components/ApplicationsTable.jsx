@@ -8,7 +8,7 @@ import {
   toggleApplicationCheck,
   updateCurrentPage
 } from '../redux/applicationsDataReducer';
-import Container from './Container';
+import Container from '../helpers/Container';
 import TableHead from './TableHead'
 import TableRow from './TableRow'
 import { DENIED, APPROVED } from '../utils/constants';

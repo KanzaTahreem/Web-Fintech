@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Modal } from './Modal';
-import Checkbox from './Checkbox';
-import Container from './Container';
 import RegisterReason from './RegisterReason';
 import ViewDocuments from './ViewDocuments';
-import CustomTooltip from './CustomTooltip';
+import Modal from '../helpers/Modal';
+import Checkbox from '../helpers/Checkbox';
+import Container from '../helpers/Container';
+import CustomTooltip from '../helpers/CustomTooltip';
 import { PENDING, DENIED, APPROVED } from '../utils/constants';
 import { toggleApplicationCheck } from '../redux/applicationsDataReducer';
 import { ALREADY_APPROVED, ALREADY_DENIED } from '../utils/messages';
