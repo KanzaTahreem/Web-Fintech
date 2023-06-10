@@ -1,4 +1,5 @@
-const ApplicationsData = [
+const localStorageApplicationsData  =  JSON.parse(localStorage.getItem('APPLICATION_DATA') || '[]');
+const mockData = [
   {
     "previousType": "소득적격",
     "applicationType": "개인전문",
@@ -1957,5 +1958,17 @@ const ApplicationsData = [
 		"approvalDate": "2023-06-02 08:56:38"
 	}
 ];
+
+// Create a lookup table based on serial numbers
+const lookupTable = {};
+
+// Merge the arrays and deduplicate based on serial number
+const ApplicationsData = localStorageApplicationsData.concat(mockData).filter(obj => {
+  if (!lookupTable[obj.serial]) {
+    lookupTable[obj.serial] = true;
+    return true;
+  }
+  return false;
+});
 
 export default ApplicationsData;

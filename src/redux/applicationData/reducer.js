@@ -56,6 +56,7 @@ const applicationsDataReducer = (state = initialState, action) => {
   }
   switch (action.type) {
     case SET_APPLICATIONS_DATA:
+      localStorage.setItem('APPLICATION_DATA', JSON.stringify(action.payload));
       return {
         ...state,
         data: action.payload,
@@ -81,6 +82,8 @@ const applicationsDataReducer = (state = initialState, action) => {
       }
       return item;
     });
+
+    localStorage.setItem('APPLICATION_DATA', JSON.stringify(updatedData));
     return {
       ...state,
       data: updatedData,
@@ -117,6 +120,7 @@ const applicationsDataReducer = (state = initialState, action) => {
       return item;
     });
 
+    localStorage.setItem('APPLICATION_DATA', JSON.stringify(updatedStatus))
     return {
       ...state,
       data: updatedStatus,
@@ -127,8 +131,9 @@ const applicationsDataReducer = (state = initialState, action) => {
     const members = action.payload.members;
     const member = members.find((item) => item.number === action.payload.number);
     const prevApplication = state.data.find((item) => item.number === action.payload.number && item.approvalStatus === PENDING);
+    let newState = {};
     if (prevApplication) {
-      return {
+      newState = {
         ...state,
         data: state.data.map((item) => {
           if (item.number === action.payload.number && item.approvalStatus === PENDING) {
@@ -153,9 +158,12 @@ const applicationsDataReducer = (state = initialState, action) => {
           return item;
         })
       }
+      console.log('Local Storage');
+      localStorage.setItem('APPLICATION_DATA', JSON.stringify(newState.data));
+      return newState;
     }
     if (member) {
-      return {
+      newState = {
         ...state,
         data: [...state.data, {
           previousType: member.investmentType,
@@ -186,6 +194,9 @@ const applicationsDataReducer = (state = initialState, action) => {
           approvalDate: action.payload.approvalDate,
         }, ...state.filteredData].slice(0, state.limit)
       }
+      console.log('Local Storage');
+      localStorage.setItem('APPLICATION_DATA', JSON.stringify(newState.data));
+      return newState;
     }
     return state;
 
