@@ -83,7 +83,6 @@ const applicationsDataReducer = (state = initialState, action) => {
       return item;
     });
 
-    localStorage.setItem('APPLICATION_DATA', JSON.stringify(updatedData));
     return {
       ...state,
       data: updatedData,
@@ -158,7 +157,6 @@ const applicationsDataReducer = (state = initialState, action) => {
           return item;
         })
       }
-      console.log('Local Storage');
       localStorage.setItem('APPLICATION_DATA', JSON.stringify(newState.data));
       return newState;
     }
@@ -194,7 +192,6 @@ const applicationsDataReducer = (state = initialState, action) => {
           approvalDate: action.payload.approvalDate,
         }, ...state.filteredData].slice(0, state.limit)
       }
-      console.log('Local Storage');
       localStorage.setItem('APPLICATION_DATA', JSON.stringify(newState.data));
       return newState;
     }
