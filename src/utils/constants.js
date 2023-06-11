@@ -13,7 +13,7 @@ export const TABS = [
   '채권내역 조회',
   'SMS 관리',
   '상담내역 관리',
-  '1:1문의내역 조회'
+  '1:1문의내역 조회',
 ];
 
 export const FILTER_OPTIONS = [

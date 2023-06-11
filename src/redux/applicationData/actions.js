@@ -1,4 +1,4 @@
-import { generateAction } from "../../utils/generateAction";
+import generateAction from '../../utils/generateAction';
 
 export const SET_APPLICATIONS_DATA = 'applications/SET_APPLICATIONS_DATA';
 export const TOGGLE_APPLICATION_CHECK = 'applications/TOGGLE_APPLICATION_CHECK';

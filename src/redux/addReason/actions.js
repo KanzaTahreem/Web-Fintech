@@ -1,4 +1,4 @@
-import { generateAction } from "../../utils/generateAction";
+import generateAction from '../../utils/generateAction';
 
 export const TOGGLE_CHECKBOX = 'addReason/TOGGLE_CHECKBOX';
 export const UPDATE_TEXTAREA = 'addReason/UPDATE_TEXTAREA';

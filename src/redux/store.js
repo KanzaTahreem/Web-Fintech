@@ -9,7 +9,7 @@ const store = configureStore({
     addReason: addReasonReducer,
     investment: changeInvestmentReducer,
     applicationsData: applicationsDataReducer,
-    membersData: membersDataReducer
+    membersData: membersDataReducer,
   },
 });
 

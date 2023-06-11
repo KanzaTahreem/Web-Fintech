@@ -4,7 +4,7 @@ import {
   updateApprovalStatus,
   updateFilter,
   updateLimit,
-  updateSortOrder
+  updateSortOrder,
 } from '../redux/applicationData/actions';
 import Modal from '../helpers/Modal';
 import Container from '../helpers/Container';
@@ -17,16 +17,16 @@ import {
   DENIED,
   PENDING,
   TABS,
-  FILTER_OPTIONS
+  FILTER_OPTIONS,
 } from '../utils/constants';
 import {
   SAVED,
   NO_SELECTED_APPLICATION,
-  CHANGE_APPROVAL_STATUS
+  CHANGE_APPROVAL_STATUS,
 } from '../utils/messages';
 import styles from '../styles/app.module.css';
 
-const ApplicationList = ({displayPopup, closePopup}) => {
+const ApplicationList = ({ displayPopup, closePopup }) => {
   const approvalStatus = [APPROVED, DENIED];
 
   const [modal, setModal] = useState(<></>);
@@ -36,6 +36,8 @@ const ApplicationList = ({displayPopup, closePopup}) => {
   const applicationsData = useSelector((state) => state.applicationsData.filteredData);
   const dispatch = useDispatch();
 
+  const getApplicationsDataChecked = () => (applicationsData ? applicationsData.filter((client) => client.checked) : []);
+
   const handleSave = (e) => {
     e.preventDefault();
     if (applicationsData && getApplicationsDataChecked().length) {
@@ -43,7 +45,7 @@ const ApplicationList = ({displayPopup, closePopup}) => {
       return;
     }
     displayPopup(NO_SELECTED_APPLICATION, closePopup, null);
-  }
+  };
 
   const closeAddReason = () => {
     setSelectedStatus('승인상태 변경');
@@ -53,46 +55,7 @@ const ApplicationList = ({displayPopup, closePopup}) => {
 
   const closeChangeInvestment = () => {
     setModal(<></>);
-  }
-
-  const updateAllSelected = (reasonOfDenial, memberNumber, memberName) => {
-    getApplicationsDataChecked().forEach((application) => {
-      dispatchApprovalStatusUpdate(application.serial, selectedStatus, reasonOfDenial, memberNumber, memberName);
-    });
-  }
-
-  const openModal = (name) => {
-    if (name === 'ChangeInvestment') {
-      setModal(
-        <Modal>
-          <Container>
-            <ChangeInvestment onClose={closeChangeInvestment} />
-          </Container>
-        </Modal>)
-    } else if (name === 'AddReason') {
-      setModal(
-        <Modal>
-          <Container>
-            <AddReason onClose={closeAddReason} onApproval={updateAllSelected} openReason={-1} />
-          </Container>
-        </Modal>
-      )
-    }
-  }
-
-  const updateSelectedItemAndClose = (changeItem) => {
-    if(changeItem) {
-      if (selectedStatus === approvalStatus[1]) {
-        openModal('AddReason')
-      } else {
-        updateAllSelected();
-      }
-      setPrevSelectedStatus(selectedStatus);
-    } else {
-      setSelectedStatus(prevSelectedStatus)
-    }
-    closePopup();
-  }
+  };
 
   const dispatchApprovalStatusUpdate = (i, status, reasonOfDenial, memberNumber, memberName) => {
     dispatch(updateApprovalStatus({
@@ -101,8 +64,48 @@ const ApplicationList = ({displayPopup, closePopup}) => {
       approvalDate: `${new Date().toISOString().split('T')[0]} ${new Date().toLocaleTimeString()}`,
       reasonOfDenial,
       memberNumber,
-      memberName
+      memberName,
     }));
+  };
+
+  const updateAllSelected = (reasonOfDenial, memberNumber, memberName) => {
+    getApplicationsDataChecked().forEach((application) => {
+      dispatchApprovalStatusUpdate(application.serial, selectedStatus, reasonOfDenial, memberNumber, memberName);
+    });
+  };
+
+  const openModal = (name) => {
+    if (name === 'ChangeInvestment') {
+      setModal(
+        <Modal>
+          <Container>
+            <ChangeInvestment onClose={closeChangeInvestment} />
+          </Container>
+        </Modal>,
+      );
+    } else if (name === 'AddReason') {
+      setModal(
+        <Modal>
+          <Container>
+            <AddReason onClose={closeAddReason} onApproval={updateAllSelected} openReason={-1} />
+          </Container>
+        </Modal>,
+      );
+    }
+  };
+
+  const updateSelectedItemAndClose = (changeItem) => {
+    if (changeItem) {
+      if (selectedStatus === approvalStatus[1]) {
+        openModal('AddReason');
+      } else {
+        updateAllSelected();
+      }
+      setPrevSelectedStatus(selectedStatus);
+    } else {
+      setSelectedStatus(prevSelectedStatus);
+    }
+    closePopup();
   };
 
   useEffect(() => {
@@ -112,20 +115,18 @@ const ApplicationList = ({displayPopup, closePopup}) => {
           displayPopup(
             CHANGE_APPROVAL_STATUS,
             () => updateSelectedItemAndClose(true),
-            () => updateSelectedItemAndClose(false)
-          )
+            () => updateSelectedItemAndClose(false),
+          );
         }
       } else {
         setPrevSelectedStatus(selectedStatus);
       }
     }
-  }, [selectedStatus])
-
-  const getApplicationsDataChecked = () => applicationsData ? applicationsData.filter((client) => client.checked) : [];
+  }, [selectedStatus]);
 
   const getPendingStatusCount = () => {
     if (applicationsData) {
-      return <span>{`${ applicationsData.filter((client) => client.approvalStatus === PENDING).length }`}</span>
+      return <span>{`${applicationsData.filter((client) => client.approvalStatus === PENDING).length}`}</span>;
     }
     return 0;
   };
@@ -134,7 +135,12 @@ const ApplicationList = ({displayPopup, closePopup}) => {
     <section className={styles.application_list}>
       {modal}
       <div className={styles.upper_row}>
-        <h1 className={styles.headline}>회원상세 <span className={styles.req} /><span>필수항목</span></h1>
+        <h1 className={styles.headline}>
+          회원상세
+          {' '}
+          <span className={styles.req} />
+          <span>필수항목</span>
+        </h1>
         <div className={styles.tabs}>
           {TABS.map((tab, index) => (
             <p className={styles.tab} key={index}>
@@ -147,7 +153,15 @@ const ApplicationList = ({displayPopup, closePopup}) => {
         <div className={styles.upper_middle_row}>
           <h2 className={styles.headline}>
             신청 목록
-            <span>(총 {applicationsData ? applicationsData.length : 0}명 | 승인대기 {getPendingStatusCount()}건)</span>
+            <span>
+              (총
+              {' '}
+              {applicationsData ? applicationsData.length : 0}
+              명 | 승인대기
+              {' '}
+              {getPendingStatusCount()}
+              건)
+            </span>
           </h2>
           <div className={styles.all_dropdowns}>
             {FILTER_OPTIONS.map((dropdown, index) => (
@@ -184,9 +198,14 @@ const ApplicationList = ({displayPopup, closePopup}) => {
             등록
           </button>
           <div>
-            <p>선택한 {getApplicationsDataChecked().length}건</p>
+            <p>
+              선택한
+              {' '}
+              {getApplicationsDataChecked().length}
+              건
+            </p>
             <Dropdown
-              buttonText='승인상태 변경'
+              buttonText="승인상태 변경"
               filterItems={approvalStatus}
               selectedItem={prevSelectedStatus}
               setSelectedItem={setSelectedStatus}

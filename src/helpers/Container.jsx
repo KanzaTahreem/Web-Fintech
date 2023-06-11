@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Popup from './Popup';
 
-const Container = ({children}) => {
+const Container = ({ children }) => {
   const [popupScreen, setPopupScreen] = useState(null);
 
   const displayPopup = (message, closeFunc, cancelFunc) => {
@@ -10,8 +10,8 @@ const Container = ({children}) => {
         message={message}
         onClose={closeFunc}
         onCancel={cancelFunc}
-        onCancelText={'취소'}
-      />
+        onCancelText="취소"
+      />,
     );
   };
 
@@ -19,15 +19,13 @@ const Container = ({children}) => {
     setPopupScreen(null);
   };
 
-  const childrenWithProps = React.Children.map(children, (child) => {
-    return React.cloneElement(child, { displayPopup, closePopup });
-  });
+  const childrenWithProps = React.Children.map(children, (child) => React.cloneElement(child, { displayPopup, closePopup }));
   return (
     <>
       {childrenWithProps}
       {popupScreen}
-   </>
+    </>
   );
-}
+};
 
 export default Container;

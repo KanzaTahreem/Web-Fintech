@@ -1,7 +1,7 @@
 import {
   TOGGLE_CHECKBOX,
   RESET_ADD_REASON_MODAL,
-  UPDATE_TEXTAREA
+  UPDATE_TEXTAREA,
 } from './actions';
 
 const initialState = {
@@ -17,17 +17,18 @@ const initialState = {
 };
 
 const addReasonReducer = (state = initialState, action) => {
+  const toggleChecking = (action) => {
+    const { payload: label } = action;
+    const checkboxes = {};
+    Object.keys(state.checkboxes).forEach((key) => {
+      checkboxes[key] = key === label;
+    });
+    return { ...state, checkboxes };
+  };
+
   switch (action.type) {
     case TOGGLE_CHECKBOX:
-      const { payload: label } = action;
-      const checkboxes = {};
-
-      // Set the clicked checkbox to true, and others to false
-      Object.keys(state.checkboxes).forEach((key) => {
-        checkboxes[key] = key === label;
-      });
-
-      return { ...state, checkboxes };
+      return toggleChecking(action);
 
     case UPDATE_TEXTAREA:
       return { ...state, textarea: action.payload };

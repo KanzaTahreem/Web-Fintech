@@ -1,4 +1,4 @@
-import { generateAction } from "../../utils/generateAction";
+import generateAction from '../../utils/generateAction';
 
 export const SET_SELECTED_ITEM = 'changeInvestment/SET_SELECTED_ITEM';
 export const SET_UPLOADED_FILES = 'changeInvestment/SET_UPLOADED_FILES';

@@ -11,8 +11,12 @@ import { toggleApplicationCheck } from '../redux/applicationData/actions';
 import { ALREADY_APPROVED, ALREADY_DENIED } from '../utils/messages';
 import styles from '../styles/app.module.css';
 
-const TableRow = ({ item, displayPopup, closePopup, selectAll }) => {
-  const { serial, previousType, applicationType, docs, applicationDate, approvalStatus, reason, approvalDate, admin, checked } = item;
+const TableRow = ({
+  item, displayPopup, closePopup, selectAll,
+}) => {
+  const {
+    serial, previousType, applicationType, docs, applicationDate, approvalStatus, reason, approvalDate, admin, checked,
+  } = item;
   const dispatch = useDispatch();
   const [modal, setModal] = useState(<></>);
 
@@ -24,38 +28,37 @@ const TableRow = ({ item, displayPopup, closePopup, selectAll }) => {
     setModal(
       <Modal>
         <Container>{component}</Container>
-      </Modal>
+      </Modal>,
     );
   };
 
   const openDocs = (docs) => {
-    openModal(<ViewDocuments docs={docs} onClose={closeModal} />)
+    openModal(<ViewDocuments docs={docs} onClose={closeModal} />);
   };
 
   const openCheckReason = () => {
-    openModal(<AddReason onClose={closeModal} openReason={serial} />)
+    openModal(<AddReason onClose={closeModal} openReason={serial} />);
   };
 
   const checkboxDisabled = () => approvalStatus === DENIED || approvalStatus === APPROVED;
 
   const onCheckBoxChange = () => {
     if (checkboxDisabled()) {
-      const message =
-        approvalStatus === APPROVED
-          ? ALREADY_APPROVED
-          : ALREADY_DENIED;
+      const message = approvalStatus === APPROVED
+        ? ALREADY_APPROVED
+        : ALREADY_DENIED;
       displayPopup(message, closePopup, null);
     } else {
       dispatch(
         toggleApplicationCheck({
           checked: !checked,
           serial,
-        })
+        }),
       );
     }
   };
 
-  const getClassName = (approvalStatus, styles) => { 
+  const getClassName = (approvalStatus, styles) => {
     let className = styles.approval;
     className += approvalStatus === PENDING ? ` ${styles.waiting}` : '';
     className += approvalStatus === DENIED ? ` ${styles.denied}` : '';
@@ -72,7 +75,7 @@ const TableRow = ({ item, displayPopup, closePopup, selectAll }) => {
 
   const ApprovalStatusComponent = () => (
     <p data-tooltip-id={`row-tooltip${serial}`}>
-      <CustomTooltip id={`row-tooltip${serial}`} text='Check details' onClick={openCheckReason}>
+      <CustomTooltip id={`row-tooltip${serial}`} text="Check details" onClick={openCheckReason}>
         <div>{approvalStatus}</div>
       </CustomTooltip>
     </p>
@@ -82,7 +85,7 @@ const TableRow = ({ item, displayPopup, closePopup, selectAll }) => {
     <tr className={styles.customer}>
       <td className={styles.checkbox}>
         <Checkbox
-          label=''
+          label=""
           checked={checked || selectAll}
           onChange={onCheckBoxChange}
           getClassName={getClassNameForCheckbox}
@@ -91,14 +94,20 @@ const TableRow = ({ item, displayPopup, closePopup, selectAll }) => {
       <td className={styles.serial}>{serial}</td>
       <td>{previousType}</td>
       <td>{applicationType}</td>
-      <td className={styles.docs} onClick={() => openDocs(docs)}>
+      <td
+        className={styles.docs}
+        onClick={() => openDocs(docs)}
+        onKeyDown={() => null}
+        role="gridcell"
+        tabIndex="0"
+      >
         <span>보기</span>
       </td>
       <td className={styles.date}>{applicationDate}</td>
       <td className={getClassName(approvalStatus, styles)}>
         <span>
           {
-            approvalStatus === DENIED ? <ApprovalStatusComponent approvalStatus={approvalStatus}/>: approvalStatus
+            approvalStatus === DENIED ? <ApprovalStatusComponent approvalStatus={approvalStatus} /> : approvalStatus
           }
         </span>
       </td>

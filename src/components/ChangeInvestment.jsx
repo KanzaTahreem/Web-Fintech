@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { HiXMark } from 'react-icons/hi2';
 import { addApplicationData } from '../redux/applicationData/actions';
-import { getFileExtension } from '../utils/getFileExtension';
+import getFileExtension from '../utils/getFileExtension';
 import Dropdown from './Dropdown';
-import InputField from '../helpers/InputField'
+import InputField from '../helpers/InputField';
 import {
   PENDING,
   MAX_SIZE,
   MAX_COUNT,
-  INVESTMENT_TYPE
+  INVESTMENT_TYPE,
 } from '../utils/constants';
 import {
   SAVED,
@@ -17,11 +17,11 @@ import {
   ALLOWED_FILE_NO,
   ALLOWED_FILE_SIZE,
   CONFIRM_CHANGE_TYPE,
-  ENTER_REQUIRED_FIELDS
+  ENTER_REQUIRED_FIELDS,
 } from '../utils/messages';
 import styles from '../styles/app.module.css';
 
-const ChangeInvestment = ({displayPopup, closePopup, onClose}) => {
+const ChangeInvestment = ({ displayPopup, closePopup, onClose }) => {
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [filePaths, setFilePaths] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -61,6 +61,7 @@ const ChangeInvestment = ({displayPopup, closePopup, onClose}) => {
           return true;
         }
       }
+      return true;
     });
 
     if (!limitExceeded) setUploadedFiles(uploaded);
@@ -72,7 +73,7 @@ const ChangeInvestment = ({displayPopup, closePopup, onClose}) => {
           {
             name: file.name,
             path: event.target.result,
-          }
+          },
         ]);
       };
       reader.readAsDataURL(file);
@@ -81,12 +82,12 @@ const ChangeInvestment = ({displayPopup, closePopup, onClose}) => {
 
   const removeFile = (fileIndex) => {
     setUploadedFiles(uploadedFiles.filter((_f, index) => fileIndex !== index));
-  }
+  };
 
-  const handleFileEvent =  (e) => {
-      const chosenFiles = Array.prototype.slice.call(e.target.files)
-      UploadFiles(chosenFiles);
-  }
+  const handleFileEvent = (e) => {
+    const chosenFiles = Array.prototype.slice.call(e.target.files);
+    UploadFiles(chosenFiles);
+  };
 
   const handleSave = (e) => {
     e.preventDefault();
@@ -97,7 +98,7 @@ const ChangeInvestment = ({displayPopup, closePopup, onClose}) => {
     displayPopup(SAVED, () => {
       dispatch(addApplicationData({
         applicationType: selectedItem,
-        docs: uploadedFiles.map((file) => ({url: URL.createObjectURL(file), ext: getFileExtension(file.name)})),
+        docs: uploadedFiles.map((file) => ({ url: URL.createObjectURL(file), ext: getFileExtension(file.name) })),
         applicationDate: `${new Date().toISOString().split('T')[0]} ${new Date().toLocaleTimeString()}`,
         approvalStatus: PENDING,
         reason: '',
@@ -106,21 +107,21 @@ const ChangeInvestment = ({displayPopup, closePopup, onClose}) => {
         checked: false,
         number: memberNumber,
         name: memberName,
-        members
-      }))
+        members,
+      }));
       closePopup();
       onClose();
-    }, null)
+    }, null);
   };
 
   const updateSelectedItemAndClose = (changeItem) => {
-    if(changeItem) {
+    if (changeItem) {
       setPrevSelectedItem(selectedItem);
     } else {
       setSelectedItem(prevSelectedItem);
     }
     closePopup();
-  }
+  };
 
   useEffect(() => {
     if (selectedItem) {
@@ -129,14 +130,14 @@ const ChangeInvestment = ({displayPopup, closePopup, onClose}) => {
           displayPopup(
             CONFIRM_CHANGE_TYPE,
             () => updateSelectedItemAndClose(true),
-            () => updateSelectedItemAndClose(false)
-          )
+            () => updateSelectedItemAndClose(false),
+          );
         }
       } else {
         setPrevSelectedItem(selectedItem);
       }
     }
-  }, [selectedItem])
+  }, [selectedItem]);
 
   const onInputChange = (e) => {
     const { name, value } = e.target;
@@ -145,7 +146,7 @@ const ChangeInvestment = ({displayPopup, closePopup, onClose}) => {
     } else if (name === 'memberName') {
       setMemberName(value);
     }
-  }
+  };
 
   return (
     <section className={`${styles.investment_change} ${styles.modal}`}>
@@ -156,50 +157,61 @@ const ChangeInvestment = ({displayPopup, closePopup, onClose}) => {
       <div className={styles.model_content}>
         <form>
           <InputField
-            text='회원번호'
-            placeholder='abc111'
-            name='memberNumber'
+            text="회원번호"
+            placeholder="abc111"
+            name="memberNumber"
             value={memberNumber}
             onChange={onInputChange}
             enabled={0}
           />
           <InputField
-            text='회원명/법인명'
-            placeholder='김길동'
-            name='memberName'
+            text="회원명/법인명"
+            placeholder="김길동"
+            name="memberName"
             value={memberName}
             onChange={onInputChange}
             enabled={0}
           />
           <div>
-            <label htmlFor="text">투자유형 <span className={styles.req} /></label>
+            <label htmlFor="text">
+              투자유형
+              {' '}
+              <span className={styles.req} />
+            </label>
             <Dropdown
               className={`${styles.box} ${styles.required} ${INVESTMENT_TYPE.isOpen ? styles['is-open'] : ''}`}
-              buttonText='일반개인'
+              buttonText="일반개인"
               filterItems={INVESTMENT_TYPE}
-              id='investment_type'
-              selectedItem= {prevSelectedItem}
-              setSelectedItem = {setSelectedItem}
+              id="investment_type"
+              selectedItem={prevSelectedItem}
+              setSelectedItem={setSelectedItem}
             />
           </div>
           <div>
-            <label htmlFor='text'>서류첨부 <span className={styles.req} /> </label>
+            <label htmlFor="text">
+              서류첨부
+              {' '}
+              <span className={styles.req} />
+              {' '}
+            </label>
             <div className={styles.file_input_area}>
-              <label htmlFor='fileUpload' className={styles.file_label}>
-                <p className={`${styles.upload_files} ${!fileLimit ? '' : 'disabled' } `}>파일 선택</p>
+              <label htmlFor="fileUpload" className={styles.file_label}>
+                <p className={`${styles.upload_files} ${!fileLimit ? '' : 'disabled'} `}>파일 선택</p>
               </label>
               <input
-                id='fileUpload'
+                id="fileUpload"
                 className={styles.required}
-                type='file'
+                type="file"
                 multiple
-                accept='*/*'
+                accept="*/*"
                 onChange={handleFileEvent}
               />
               <div className={styles.files_list}>
                 {uploadedFiles.map((file, index) => (
-                  <div key={`${file.name}-${index}`}>
-                      {file.name} {<HiXMark onClick={() => removeFile(index)}/>}
+                  <div key={`${file.index}`}>
+                    {file.name}
+                    {' '}
+                    <HiXMark onClick={() => removeFile(index)} />
                   </div>
                 ))}
               </div>
@@ -212,11 +224,11 @@ const ChangeInvestment = ({displayPopup, closePopup, onClose}) => {
         </ul>
       </div>
       <div className={styles.model_btns}>
-        <button className={styles.save_btn} onClick={handleSave}>저장</button>
-        <button className={styles.cancel_btn} onClick={onClose}>취소</button>
+        <button type="button" className={styles.save_btn} onClick={handleSave}>저장</button>
+        <button type="button" className={styles.cancel_btn} onClick={onClose}>취소</button>
       </div>
     </section>
   );
-}
+};
 
 export default ChangeInvestment;
