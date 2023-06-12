@@ -160,7 +160,7 @@ If you like this project, please give it a star ✨
 
 ## 🙏 Acknowledgments <a name="acknowledgements"></a>
 
-Thank you to microverse for giving me the opportunity to learn and grow as a developer.
+I would like to express my gratitude to all those who have supported me.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 <!-- LICENSE -->
