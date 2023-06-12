@@ -13,14 +13,14 @@ import { SAVED, ENTER_REQUIRED_FIELDS } from '../utils/messages';
 import styles from '../styles/app.module.css';
 
 const AddReason = ({
-  displayPopup, closePopup, onClose, onApproval, openReason,
+  displayPopup, closePopup, onClose, onApproval, openReason, initialMemberName, initialMemberNumber,
 }) => {
   const dispatch = useDispatch();
   const checkboxes = useSelector((state) => state.addReason.checkboxes);
   const textarea = useSelector((state) => state.addReason.textarea);
   const applicationsData = useSelector((state) => state.applicationsData.filteredData);
-  const [memberName, setMemberName] = useState('');
-  const [memberNumber, setMemberNumber] = useState('');
+  const [memberName, setMemberName] = useState(initialMemberName || '');
+  const [memberNumber, setMemberNumber] = useState(initialMemberNumber || '');
   const [checkBoxList, setCheckBoxList] = useState(<></>);
   const [lastSavedDate, setLastSavedDate] = useState('');
   const [manager, setManager] = useState('');

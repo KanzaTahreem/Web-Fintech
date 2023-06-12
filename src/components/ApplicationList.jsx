@@ -84,10 +84,19 @@ const ApplicationList = ({ displayPopup, closePopup }) => {
         </Modal>,
       );
     } else if (name === 'AddReason') {
+      const chckedApplications = applicationsData.filter((item) => item.checked);
+      const initialMemberName = chckedApplications.map((item) => item.name).join(',');
+      const initialMemberNumber = chckedApplications.map((item) => item.number).join(',');
       setModal(
         <Modal>
           <Container>
-            <AddReason onClose={closeAddReason} onApproval={updateAllSelected} openReason={-1} />
+            <AddReason
+              onClose={closeAddReason}
+              onApproval={updateAllSelected}
+              openReason={-1}
+              initialMemberName={initialMemberName}
+              initialMemberNumber={initialMemberNumber}
+            />
           </Container>
         </Modal>,
       );

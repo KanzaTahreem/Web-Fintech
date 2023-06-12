@@ -402,6 +402,12 @@ td {
   justify-content: space-evenly;
 }
 
+.arrows button {
+  border: none;
+  background: transparent;
+  outline: none;
+}
+
 .numbers {
   display: flex;
   font-weight: 700;
@@ -409,7 +415,7 @@ td {
   font-size: 0.95rem;
 }
 
-.numbers p {
+.numbers span {
   width: 2.5rem;
   height: 2.5rem;
   display: grid;
