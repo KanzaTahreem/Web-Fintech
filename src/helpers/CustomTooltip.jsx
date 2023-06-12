@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import styles from '../styles/tooltip.module.css';
 
 const CustomTooltip = ({ text, children, onClick }) => {
@@ -25,17 +24,14 @@ const CustomTooltip = ({ text, children, onClick }) => {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}
+      onKeyDown={() => null}
+      role="button"
+      tabIndex="0"
     >
       {children}
       {isTooltipVisible && <p className={styles.tooltip_text}>{text}</p>}
     </div>
   );
-};
-
-CustomTooltip.propTypes = {
-  text: PropTypes.string.isRequired,
-  children: PropTypes.node.isRequired,
-  onClick: PropTypes.func,
 };
 
 export default CustomTooltip;

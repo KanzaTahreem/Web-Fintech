@@ -1,90 +1,86 @@
-import React, {useState} from 'react';
-import Checkbox from './Checkbox';
-import styles from '../styles/app.module.css';
-import modalStyles from '../styles/app.module.css';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { selectUnSelectApplication } from '../redux/applicationsDataReducer';
-import CustomTooltip from './CustomTooltip';
-import { Modal } from './Modal';
-import Container from './Container';
-import RegisterReason from './RegisterReason';
+import AddReason from './AddReason';
 import ViewDocuments from './ViewDocuments';
+import Modal from '../helpers/Modal';
+import Checkbox from '../helpers/Checkbox';
+import Container from '../helpers/Container';
+import CustomTooltip from '../helpers/CustomTooltip';
+import { PENDING, DENIED, APPROVED } from '../utils/constants';
+import { toggleApplicationCheck } from '../redux/applicationData/actions';
+import { ALREADY_APPROVED, ALREADY_DENIED } from '../utils/messages';
+import styles from '../styles/app.module.css';
 
-const TableRow = ({ item, displayPopup, closePopup, selectAll }) => {
-  const { serial, previousType, applicationType, docs, applicationDate, approvalStatus, reason, approvalDate, admin, checked } = item;
+const TableRow = ({
+  item, displayPopup, closePopup, selectAll,
+}) => {
+  const {
+    serial, previousType, applicationType, docs, applicationDate, approvalStatus, reason, approvalDate, admin, checked,
+  } = item;
   const dispatch = useDispatch();
   const [modal, setModal] = useState(<></>);
 
-  const handleCheckboxChange = () => {
-    if (approvalStatus !== '승인거부' && approvalStatus !== '승인완료') {
-      dispatch(selectUnSelectApplication({
-        checked: !checked,
-        serial
-      }));
-    }
-  };
-
-  const onClose = () => {
+  const closeModal = () => {
     setModal(<></>);
   };
 
-  const openDocs = (docs) => {
+  const openModal = (component) => {
     setModal(
       <Modal>
-        <Container>
-          <ViewDocuments docs={docs} onClose={onClose} />
-        </Container>
-      </Modal>
+        <Container>{component}</Container>
+      </Modal>,
     );
   };
 
-  const getClassName = () => {
-    if (approvalStatus === '승인대기') {
-      return `${styles.approval} ${styles.waiting}`;
-    } else if (approvalStatus === '승인거부') {
-      return `${styles.approval} ${styles.denied}`;
-    } else if (approvalStatus === '승인완료') {
-      return `${styles.approval} ${styles.approved}`;
-    }
-    return styles.approval;
+  const openDocs = (docs) => {
+    openModal(<ViewDocuments docs={docs} onClose={closeModal} />);
   };
 
-  const checkboxDisabled = () => approvalStatus === '승인거부' || approvalStatus === '승인완료';
-  const getClassNameForCheckbox = () => {
-    if ( checkboxDisabled() ) {
-      return modalStyles["disabled"];
-    }
-    return `${checked ? modalStyles["checked"] : ""} ${modalStyles.checkbox}`;
-  }
+  const openCheckReason = () => {
+    openModal(<AddReason onClose={closeModal} openReason={serial} />);
+  };
 
-  const onCheckBoxChange = (e) => {
+  const checkboxDisabled = () => approvalStatus === DENIED || approvalStatus === APPROVED;
+
+  const onCheckBoxChange = () => {
     if (checkboxDisabled()) {
-      const message = approvalStatus === '승인완료' ? 'You are already an approved member.' : 'You have already been denied approval.';
-      displayPopup(message, closePopup, null)
+      const message = approvalStatus === APPROVED
+        ? ALREADY_APPROVED
+        : ALREADY_DENIED;
+      displayPopup(message, closePopup, null);
     } else {
-      handleCheckboxChange();
+      dispatch(
+        toggleApplicationCheck({
+          checked: !checked,
+          serial,
+        }),
+      );
     }
-  }
-
-  const closeRegisterReason = () => {
-    setModal(<></>);
   };
 
-  const openDeniedReasonsComponent = () => {
-    setModal(
-      <Modal>
-        <Container>
-          <RegisterReason onClose={closeRegisterReason} openReason={serial} />
-        </Container>
-      </Modal>
-    )
-  }
+  const getClassName = (approvalStatus, styles) => {
+    let className = styles.approval;
+    className += approvalStatus === PENDING ? ` ${styles.waiting}` : '';
+    className += approvalStatus === DENIED ? ` ${styles.denied}` : '';
+    className += approvalStatus === APPROVED ? ` ${styles.approved}` : '';
+    return className;
+  };
 
-  const ApprovalStatusComponent = ({approvalStatus}) => (<p data-tooltip-id={"row-tooltip"+serial}>
-    <CustomTooltip id={"row-tooltip"+serial} text="Check details" onClick={openDeniedReasonsComponent} >
-      <div>{approvalStatus}</div>
-    </CustomTooltip>
-  </p>);
+  const getClassNameForCheckbox = () => {
+    if (checkboxDisabled()) {
+      return styles.disabled;
+    }
+    return `${checked ? styles.checked : ''} ${styles.checkbox}`;
+  };
+
+  const ApprovalStatusComponent = () => (
+    <p data-tooltip-id={`row-tooltip${serial}`}>
+      <CustomTooltip id={`row-tooltip${serial}`} text="Check details" onClick={openCheckReason}>
+        <div>{approvalStatus}</div>
+      </CustomTooltip>
+    </p>
+  );
+
   return (
     <tr className={styles.customer}>
       <td className={styles.checkbox}>
@@ -98,11 +94,23 @@ const TableRow = ({ item, displayPopup, closePopup, selectAll }) => {
       <td className={styles.serial}>{serial}</td>
       <td>{previousType}</td>
       <td>{applicationType}</td>
-      <td className={styles.docs} onClick={() => openDocs(docs)}><span>보기</span></td>
+      <td
+        className={styles.docs}
+        onClick={() => openDocs(docs)}
+        onKeyDown={() => null}
+        role="gridcell"
+        tabIndex="0"
+      >
+        <span>보기</span>
+      </td>
       <td className={styles.date}>{applicationDate}</td>
-      <td className={getClassName()}><span>{
-        approvalStatus === '승인거부' ? <ApprovalStatusComponent approvalStatus={approvalStatus}/>: approvalStatus
-        }</span></td>
+      <td className={getClassName(approvalStatus, styles)}>
+        <span>
+          {
+            approvalStatus === DENIED ? <ApprovalStatusComponent approvalStatus={approvalStatus} /> : approvalStatus
+          }
+        </span>
+      </td>
       <td className={styles.reason}>{reason}</td>
       <td className={styles.date}>{approvalDate}</td>
       <td>{admin}</td>

@@ -1,4 +1,4 @@
-import MembersData from "../data/MembersData";
+import MembersData from '../../data/MembersData';
 
 const initialState = {
   data: MembersData,

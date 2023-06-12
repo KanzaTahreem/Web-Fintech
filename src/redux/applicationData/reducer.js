@@ -1,61 +1,15 @@
-import ApplicationsData from "../data/ApplicationsData";
-
-const SET_APPLICATIONS_DATA = 'applications/SET_APPLICATIONS_DATA';
-const SELECT_UNSELECT_APPLICATION = 'applications/SELECT_UNSELECT_APPLICATION';
-const UPDATE_APPROVAL_STATUS = 'applications/UPDATE_APPROVAL_STATUS';
-const ADD_APPLICATION_DATA = 'applications/ADD_APPLICATION_DATA';
-const UPDATE_FILTER = 'applications/UPDATE_FILTER';
-const UPDATE_SORT_ORDER = 'applications/UPDATE_SORT_ORDER';
-const UPDATE_LIMIT = 'applications/UPDATE_LIMIT';
-const UPDATE_CURRENT_PAGE = 'applications/UPDATE_CURRENT_PAGE';
-
-export const setApplicationsData = (applicationsData) => {
-  return {
-    type: SET_APPLICATIONS_DATA,
-    payload: applicationsData,
-  };
-};
-
-export const selectUnSelectApplication = (payload) => ({
-  type: SELECT_UNSELECT_APPLICATION,
-  payload
-})
-
-export const updateApprovalStatus = (payload) => ({
-  type: UPDATE_APPROVAL_STATUS,
-  payload
-});
-
-export const addApplicationData = (payload) => ({
-  type: ADD_APPLICATION_DATA,
-  payload
-});
-
-export const updateFilter = (filter) => {
-  return {
-    type: UPDATE_FILTER,
-    payload: filter
-  }
-}
-
-export const updateSortOrder = (sortOrder) => {
-  return {
-    type: UPDATE_SORT_ORDER,
-    payload: sortOrder
-  }
-}
-
-export const updateLimit = (limit) => {
-  return {
-    type: UPDATE_LIMIT,
-    payload: limit
-  }
-}
-
-export const updateCurrentPage = (page) => ({
-  type: UPDATE_CURRENT_PAGE,
-  payload: page
-});
+import ApplicationsData from '../../data/ApplicationsData';
+import { PENDING, DENIED, APPROVED } from '../../utils/constants';
+import {
+  SET_APPLICATIONS_DATA,
+  TOGGLE_APPLICATION_CHECK,
+  UPDATE_APPROVAL_STATUS,
+  ADD_APPLICATION_DATA,
+  UPDATE_FILTER,
+  UPDATE_SORT_ORDER,
+  UPDATE_LIMIT,
+  UPDATE_CURRENT_PAGE,
+} from './actions';
 
 const initialLimit = 50;
 
@@ -65,76 +19,84 @@ const initialState = {
     if (a.applicationDate === b.applicationDate) return 0;
     if (!a.applicationDate) return 1;
     if (!b.applicationDate) return -1;
-    return new Date(b.applicationDate) - new Date(a.applicationDate)
+    return new Date(b.applicationDate) - new Date(a.applicationDate);
   }).slice(0, initialLimit),
   filter: '승인여부 전체',
   sortOrder: '신청일시순',
   limit: initialLimit,
-  currentPage: 1
+  currentPage: 1,
 };
 
 const applicationsDataReducer = (state = initialState, action) => {
-  function getFilteredData(filter, sortOrder, limit, currentPage) {
-    // Return data filtered by filter state and sorted by sortOrder state and limited by limit state
+  function getFilteredData(filter, sortOrder) {
     const filteredData = state.data.filter((item) => {
       if (filter === '승인여부 전체') return true;
-      if (filter === '승인대기') return item.approvalStatus === '승인대기';
-      if (filter === '승인완료') return item.approvalStatus === '승인완료';
-      if (filter === '승인거부') return item.approvalStatus === '승인거부';
+      if (filter === PENDING) return item.approvalStatus === PENDING;
+      if (filter === APPROVED) return item.approvalStatus === APPROVED;
+      if (filter === DENIED) return item.approvalStatus === DENIED;
       return true;
-    }
-    ).sort((a, b) => {
+    }).sort((a, b) => {
       if (sortOrder === '신청일시순') {
         if (a.applicationDate === b.applicationDate) return 0;
         if (!a.applicationDate) return 1;
         if (!b.applicationDate) return -1;
-        return new Date(b.applicationDate) - new Date(a.applicationDate)
+        return new Date(b.applicationDate) - new Date(a.applicationDate);
       }
       if (sortOrder === '승인일시순') {
         if (a.approvalDate === b.approvalDate) return 0;
         if (!a.approvalDate) return 1;
         if (!b.approvalDate) return -1;
-        return new Date(b.approvalDate) - new Date(a.approvalDate)
+        return new Date(b.approvalDate) - new Date(a.approvalDate);
       }
       return 0;
-    }
-    );
+    });
     return filteredData;
   }
+  let updatedData;
+  let updatedFilteredData;
+  let updatedStatus;
+  let updatedFilteredStatus;
+  let members;
+  let member;
+  let prevApplication;
+  let newState = {};
   switch (action.type) {
     case SET_APPLICATIONS_DATA:
+      localStorage.setItem('APPLICATION_DATA', JSON.stringify(action.payload));
       return {
         ...state,
         data: action.payload,
-        filteredData: getFilteredData(state.filter, state.sortOrder, state.limit, state.currentPage)
+        filteredData: getFilteredData(state.filter, state.sortOrder),
       };
-    case SELECT_UNSELECT_APPLICATION:
-      const updatedData = state.data.map((item) => {
+
+    case TOGGLE_APPLICATION_CHECK:
+      updatedData = state.data.map((item) => {
         if (item.serial === action.payload.serial) {
           return {
             ...item,
-            checked: action.payload.checked
-          }
+            checked: action.payload.checked,
+          };
         }
         return item;
       });
-      // Update all items in filteredData that have the same serial as the selected item
-      const updatedFilteredData = state.filteredData.map((item) => {
+      updatedFilteredData = state.filteredData.map((item) => {
         if (item.serial === action.payload.serial) {
           return {
             ...item,
-            checked: action.payload.checked
-          }
+            checked: action.payload.checked,
+          };
         }
         return item;
       });
+
       return {
         ...state,
         data: updatedData,
-        filteredData: updatedFilteredData
+        filteredData: updatedFilteredData,
       };
+
     case UPDATE_APPROVAL_STATUS:
-      const updatedStatus = state.data.map((item) => {
+      updatedStatus = state.data.map((item) => {
         if (item.serial === action.payload.serial) {
           return {
             ...item,
@@ -144,12 +106,11 @@ const applicationsDataReducer = (state = initialState, action) => {
             reason: action.payload.reasonOfDenial || item.reason,
             number: action.payload.memberNumber || item.number,
             name: action.payload.memberName || item.name,
-          }
+          };
         }
         return item;
       });
-
-      const updatedFilteredStatus = state.filteredData.map((item) => {
+      updatedFilteredStatus = state.filteredData.map((item) => {
         if (item.serial === action.payload.serial) {
           return {
             ...item,
@@ -159,49 +120,53 @@ const applicationsDataReducer = (state = initialState, action) => {
             reason: action.payload.reasonOfDenial || item.reason,
             number: action.payload.memberNumber || item.number,
             name: action.payload.memberName || item.name,
-          }
+          };
         }
         return item;
       });
 
+      localStorage.setItem('APPLICATION_DATA', JSON.stringify(updatedStatus));
       return {
         ...state,
         data: updatedStatus,
-        filteredData: updatedFilteredStatus
-      }
+        filteredData: updatedFilteredStatus,
+      };
+
     case ADD_APPLICATION_DATA:
-      const members = action.payload.members;
-      const member = members.find((item) => item.number === action.payload.number);
-      const prevApplication = state.data.find((item) => item.number === action.payload.number && item.approvalStatus === '승인대기');
+      members = action.payload.members;
+      member = members.find((item) => item.number === action.payload.number);
+      prevApplication = state.data.find((item) => item.number === action.payload.number && item.approvalStatus === PENDING);
       if (prevApplication) {
-        return {
+        newState = {
           ...state,
           data: state.data.map((item) => {
-            if (item.number === action.payload.number && item.approvalStatus === '승인대기') {
+            if (item.number === action.payload.number && item.approvalStatus === PENDING) {
               return {
                 ...item,
                 applicationType: action.payload.applicationType,
                 docs: action.payload.docs,
                 applicationDate: action.payload.applicationDate,
-              }
+              };
             }
             return item;
           }),
           filteredData: state.filteredData.map((item) => {
-            if (item.number === action.payload.number && item.approvalStatus === '승인대기') {
+            if (item.number === action.payload.number && item.approvalStatus === PENDING) {
               return {
                 ...item,
                 applicationType: action.payload.applicationType,
                 docs: action.payload.docs,
                 applicationDate: action.payload.applicationDate,
-              }
+              };
             }
             return item;
-          })
-        }
+          }),
+        };
+        localStorage.setItem('APPLICATION_DATA', JSON.stringify(newState.data));
+        return newState;
       }
       if (member) {
-        return {
+        newState = {
           ...state,
           data: [...state.data, {
             previousType: member.investmentType,
@@ -230,34 +195,41 @@ const applicationsDataReducer = (state = initialState, action) => {
             checked: action.payload.checked,
             admin: action.payload.admin,
             approvalDate: action.payload.approvalDate,
-          }, ...state.filteredData].slice(0, state.limit)
-        }
+          }, ...state.filteredData].slice(0, state.limit),
+        };
+        localStorage.setItem('APPLICATION_DATA', JSON.stringify(newState.data));
+        return newState;
       }
       return state;
+
     case UPDATE_FILTER:
       return {
         ...state,
-        filteredData: getFilteredData(action.payload, state.sortOrder, state.limit, state.currentPage),
-        filter: action.payload
-      }
+        filteredData: getFilteredData(action.payload, state.sortOrder),
+        filter: action.payload,
+      };
+
     case UPDATE_SORT_ORDER:
       return {
         ...state,
-        filteredData: getFilteredData(state.filter, action.payload, state.limit, state.currentPage),
-        sortOrder: action.payload
-      }
+        filteredData: getFilteredData(state.filter, action.payload),
+        sortOrder: action.payload,
+      };
+
     case UPDATE_LIMIT:
       return {
         ...state,
-        filteredData: getFilteredData(state.filter, state.sortOrder, action.payload, state.currentPage),
-        limit: action.payload
-      }
+        filteredData: getFilteredData(state.filter, state.sortOrder),
+        limit: action.payload,
+      };
+
     case UPDATE_CURRENT_PAGE:
       return {
         ...state,
-        filteredData: getFilteredData(state.filter, state.sortOrder, state.limit, action.payload),
-        currentPage: action.payload
-      }
+        filteredData: getFilteredData(state.filter, state.sortOrder),
+        currentPage: action.payload,
+      };
+
     default:
       return state;
   }

@@ -1,0 +1,10 @@
+export const SAVED = '저장되었습니다.';
+export const NO_SELECTED_APPLICATION = '선택된 신청건이 없습니다.';
+export const CHANGE_APPROVAL_STATUS = '선택된 건의 승인상태를 변경하시겠습니까?';
+export const ALREADY_APPROVED = '이미 승인 완료된 회원입니다.';
+export const ALREADY_DENIED = '이미 승인 거부된 회원입니다.';
+export const ALLOWED_FILE_TYPES = 'jpg, jpeg, gif, png, pdf 파일만 등록 가능합니다.';
+export const ALLOWED_FILE_NO = '최대 10개까지 등록 가능합니다.';
+export const ALLOWED_FILE_SIZE = '최대 100MB까지 등록 가능합니다.';
+export const CONFIRM_CHANGE_TYPE = '투자유형을 변경하시겠습니까?';
+export const ENTER_REQUIRED_FIELDS = '필수입력항목을 입력해주세요.';
