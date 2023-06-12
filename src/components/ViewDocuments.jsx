@@ -30,9 +30,9 @@ const ViewDocuments = ({ docs, onClose }) => (
     </div>
     <div className={styles.model_btns}>
       <button type="submit" className={`${styles.btn} ${styles.download_btn}`} onClick={onClose}>
-        download
+        파일 다운로드
       </button>
-      <button type="submit" className={styles.check_btn} onClick={onClose}>check</button>
+      <button type="submit" className={styles.check_btn} onClick={onClose}>확인</button>
     </div>
   </section>
 );
