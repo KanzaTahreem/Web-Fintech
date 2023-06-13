@@ -6,14 +6,12 @@
   - [🧰 Built With ](#-built-with-)
     - [⚡ Tech Stack ](#-tech-stack-)
     - [🔍 Key Features ](#-key-features-)
-  - [🚀 Live Demo ](#-live-demo-)
+  - [🌐 Live Demo ](#-live-demo-)
   - [💻 Getting Started ](#-getting-started-)
     - [📋 Prerequisites](#-prerequisites)
     - [📂 Setup](#-setup)
     - [📥 Install](#-install)
-    - [🔌 Usage ](#-usage-)
-    - [⚙️ Run tests](#️-run-tests)
-    - [🌐 Deployment](#-deployment)
+    - [⚙️ Usage ](#️-usage-)
   - [👥 Author ](#-author-)
   - [🔮 Future Features ](#-future-features-)
   - [🤝 Contributing ](#-contributing-)
@@ -27,7 +25,7 @@
 
 >  *A web application for managing member applications and investment types.*
 
-The Investment Type Management App is a comprehensive web application designed to streamline and simplify the management of member applications and investment types. It provides a user-friendly interface that allows users to efficiently handle and track various aspects of the application process. With features such as application status management, rejection reason lookup, investment type modification, and data filtering, this app offers a powerful solution for investment management.
+The *Web Fintech* is a comprehensive web application designed to streamline and simplify the management of member applications and investment types. It provides a user-friendly interface that allows users to efficiently handle and track various aspects of the application process. With features such as application status management, rejection reason lookup, investment type modification, and data filtering, this app offers a powerful solution for investment management.
 
 ## 🧰 Built With <a name="built-with"></a>
 
@@ -53,7 +51,7 @@ The Investment Type Management App is a comprehensive web application designed t
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## 🚀 Live Demo <a name="live-demo"></a>
+## 🌐 Live Demo <a name="live-demo"></a>
 
 - [Have a look](https://web-fintech.netlify.app/)
 
@@ -84,36 +82,19 @@ Clone this repository to your desired folder:
 
 ### 📥 Install
 
-Install thr project dependencies with:
+Install the project dependencies with:
 
 ```
   npm install
 ```
 
-### 🔌 Usage <a name="usage"></a>
+### ⚙️ Usage <a name="usage"></a>
 
 To run the project, execute the following command:
 
 ```
   npm start
 ```
-
-### ⚙️ Run tests
-
-To run the test, execute the following command:
-
-```
-  npm test
-```
-
-### 🌐 Deployment
-
-You can deploy this project using:
-
-```
-  npm run deploy
-```
-
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -133,8 +114,8 @@ You can deploy this project using:
 
 ## 🔮 Future Features <a name="future-features"></a>
 - ***Mobile Application:** Develop a mobile application version to provide on-the-go access for users.*
-- ***Data Visualization:** Add visualizations such as charts and graphs to provide a visual representation of application statuses, and other relevant data.*
-- ***Multilingual Support:** Add multilingual support to the application to cater to users from different regions and languages, improving accessibility and usability.*
+- ***Data Visualization:** Add graphs to provide a visual representation of application statuses.*
+- ***Multilingual Support:** Add multilingual support to cater to users from different regions and languages.*
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
