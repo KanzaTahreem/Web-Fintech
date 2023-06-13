@@ -55,7 +55,7 @@ The Investment Type Management App is a comprehensive web application designed t
 
 ## 🚀 Live Demo <a name="live-demo"></a>
 
-- On it's way . . .
+- [Have a look](https://web-fintech.netlify.app/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
