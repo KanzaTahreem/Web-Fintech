@@ -60,43 +60,6 @@ const AddReason = ({
     onClose();
   };
 
-  // const getCheckBoxList = (modalData) => {
-  //   let checkboxList = [];
-  //   let found = false;
-  //   if (openReason > 0 && modalData) {
-  //     for (const [label] of Object.entries(checkboxes)) {
-  //       if (modalData.reason === label) {
-  //         found = true;
-  //       }
-  //       checkboxList.push(<Checkbox
-  //         key={label}
-  //         label={label}
-  //         checked={(modalData.reason === label) || (!found && label === '직접 입력')}
-  //         onChange={() => handleCheckboxChange(label)}
-  //         disabled
-  //       />);
-  //     }
-  //   } else {
-  //     checkboxList = Object.entries(checkboxes).map(([label, checked]) => (
-  //       <Checkbox
-  //         key={label}
-  //         label={label}
-  //         checked={checked}
-  //         onChange={() => handleCheckboxChange(label)}
-  //         disabled={false}
-  //       />
-  //     ));
-  //   }
-  //   if (!found) {
-  //     dispatch(updateTextarea(modalData?.reason || ''));
-  //   }
-  //   return (
-  //     <>
-  //       {checkboxList}
-  //     </>
-  //   );
-  // };
-
   const getCheckBoxList = (modalData) => {
     let checkboxList = [];
     let found = false;

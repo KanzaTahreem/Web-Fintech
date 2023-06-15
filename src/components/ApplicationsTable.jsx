@@ -103,22 +103,6 @@ const ApplicationsTable = () => {
                 alt="left_double_arrow"
               />
             </button>
-            {/* <img
-              src={leftDoubleArrow}
-              alt="left_double_arrow"
-              onClick={() => changePage(false, true, false)}
-              onKeyDown={() => null}
-              role="tab"
-              tabIndex="0"
-            /> */}
-            {/* <img
-              src={leftArrow}
-              alt="left_arrow"
-              onClick={() => changePage(false)}
-              onKeyDown={() => null}
-              role="button"
-              tabIndex="0"
-            /> */}
             <button type="button" onClick={() => changePage(false)} onKeyDown={() => null}>
               <img
                 src={leftArrow}
@@ -128,22 +112,6 @@ const ApplicationsTable = () => {
           </div>
           <div className={styles.numbers}>{renderPageNumbers()}</div>
           <div className={styles.arrows}>
-            {/* <img
-              src={rightArrow}
-              alt="right_double_arrow"
-              onClick={() => changePage(true)}
-              onKeyDown={() => null}
-              role="button"
-              tabIndex="0"
-            /> */}
-            {/* <img
-              src={rightDoubleArrow}
-              alt="right_arrow"
-              onClick={() => changePage(true, false, true)}
-              onKeyDown={() => null}
-              role="button"
-              tabIndex="0"
-            /> */}
             <button type="button" onClick={() => changePage(true)} onKeyDown={() => null}>
               <img
                 src={rightArrow}
